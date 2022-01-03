@@ -1,0 +1,33 @@
+﻿@if (Orders != null && Orders.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Дата размещения</th>
+                <th>Номер заказа</th>
+                <th>Страна</th>
+                <th>Область</th>
+                <th>Город</th>
+                <th>Имя клиента</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Orders)
+            {
+                <OrderComponent Order="order"></OrderComponent>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+   <h3>Список пуст.</h3>
+}
+
+@code {
+
+    [Parameter]
+    public IEnumerable<Order> Orders { get; set; }
+
+    private Order order;
+}

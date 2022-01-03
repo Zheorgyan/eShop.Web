@@ -1,0 +1,60 @@
+﻿@page "/transactions"
+
+@attribute [Authorize]
+
+@inject IJSRuntime JSRuntime
+@inject IViewOrdersUseCase ViewOrdersUseCase
+@inject IGetOrdersUseCase GetOrdersUseCase
+
+<h3>Отчет о заказах</h3>
+<div id="printarea">
+    <div class="row">
+        <div class="col-2">
+            <label for="cashier">Имя покупателя</label>
+            <input type="text" id="customer" class="form-control" @bind-value="customerName" />
+        </div>
+        <div class="col-3">
+            <label for="startdate">Дата с</label>
+            <input type="date" id="startdate" class="form-control" @bind-value="startDate" />
+        </div>
+        <div class="col-3">
+            <label for="enddate">Дата по</label>
+            <input type="date" id="enddate" class="form-control" @bind-value="endDate" />
+        </div>
+        <div class="col-2">
+            <label>&nbsp;</label>
+            <button type="button" class="btn btn-primary form-control" @onclick="LoadTransactions">Поиск</button>
+        </div>
+        <div class="col-2">
+            <label>&nbsp;</label>
+            <button type="button" class="btn btn-primary form-control" @onclick="PrintReport">Печать</button>
+        </div>
+    </div>
+    <br />
+    <OrderListComponent Orders="transactions"></OrderListComponent>
+</div>
+@code {
+    private string customerName;
+    private DateTime startDate;
+    private DateTime endDate;
+    private IEnumerable<Order> transactions;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        startDate = DateTime.Today;
+        endDate = DateTime.Today;
+        transactions = ViewOrdersUseCase.Execute();
+    }
+
+    private void LoadTransactions()
+    {
+        transactions = GetOrdersUseCase.Execute(customerName, startDate, endDate);
+    }
+
+    private void PrintReport()
+    {
+        JSRuntime.InvokeVoidAsync("print");
+    }
+}

@@ -1,0 +1,65 @@
+﻿@page "/product/{id:int}"
+
+@inject NavigationManager NavigationManager
+@inject IViewProductUseCase ViewProductUseCase
+@inject IAddProductToCartUseCase  addProductToCartUseCase
+@inject eShop.UseCases.DeleteProductUseCase.IDeleteProductUseCase DeleteProductUseCase
+
+<h3>Детали заказа</h3>
+
+<div class="card" style="width: 28rem;">
+    <div class="card-body">
+        <img src="@product.ImageLink" width="100%"/>
+        <h5 class="card-title">@product.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@product.Brand</h6>
+        <h6 class="card-subtitle mb-2 text-muted">@product.Author</h6>
+        <hr />
+        <p>
+            Цена: <label style="color:darkred">@product.Price.ToString("c")</label>
+        </p>
+        <p class="card-text">@product.Description</p>
+    </div>
+    <AuthorizeView>
+        <NotAuthorized>
+            <button class="button btn-primary" @onclick="AddToCart">Добавить в корзину</button>
+        </NotAuthorized>
+        <Authorized>
+            <button class="button btn-primary" @onclick="EditProduct">Редактировать</button>
+            <button class="button btn-primary" @onclick="DeleteProduct">Удалить</button>
+        </Authorized>
+    </AuthorizeView>    
+</div>
+<br/>
+<NavLink href="products">Вернуться</NavLink>
+
+@code {
+    private Product product;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (Id > 0) product = ViewProductUseCase.Execute(Id);
+
+    }
+
+    private void AddToCart()
+    {
+        addProductToCartUseCase.Execute(product.ProductId);
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void EditProduct()
+    {
+        NavigationManager.NavigateTo($"/editproduct/{product.ProductId}");
+    }
+
+    private void DeleteProduct()
+    {
+        DeleteProductUseCase.Execute(product.ProductId);
+        NavigationManager.NavigateTo("/products");
+    }
+}
