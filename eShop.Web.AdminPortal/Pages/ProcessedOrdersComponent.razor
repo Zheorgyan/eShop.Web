@@ -2,7 +2,7 @@
 
 @inject IViewProcessedOrdersUseCase viewProcessedOrdersUseCase
 
-@attribute [Authorize]
+@attribute [Authorize(Policy ="AdminOnly")]
 
 <h3>Обработанные заказы</h3>
 <br />

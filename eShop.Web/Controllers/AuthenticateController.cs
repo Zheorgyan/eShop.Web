@@ -34,7 +34,7 @@ namespace eShop.Web.Controllers
         {
             await HttpContext.SignOutAsync();
 
-            return Redirect("/outstandingorders");
+            return Redirect("/");
         }
     }
 }

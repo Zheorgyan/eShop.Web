@@ -1,5 +1,5 @@
 ﻿@page "/addproduct"
-@attribute [Authorize]
+@attribute [Authorize(Policy ="AdminOnly")]
 
 @inject IAddProductUseCase AddProductUseCase
 @inject NavigationManager NavigationManager
@@ -52,7 +52,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
         product = new Product();
     }
 

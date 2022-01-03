@@ -1,7 +1,7 @@
 ﻿@page "/outstandingorders"
 @page "/admin" 
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = "AdminOnly")]
 
 @inject IViewOutstandingOrderUseCase viewOutstandingOrderUseCase 
 

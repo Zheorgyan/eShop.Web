@@ -1,39 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using eShop.CoreBusiness.Services;
+//using eShop.DataStore.HardCoded;
+
+using eShop.DataStore.SQL.Dapper;
+using eShop.StateStore.LocalStorage;
+using eShop.UseCases.AddProductUseCase;
+using eShop.UseCases.EditProductScreen;
+using eShop.UseCases.OrderConfirmationScreen;
+using eShop.UseCases.OutstandingOrderScreen;
+using eShop.UseCases.PluginInterfaces.DataStore;
+using eShop.UseCases.PluginInterfaces.StateStore;
+using eShop.UseCases.PluginInterfaces.UI;
+using eShop.UseCases.ProcessedOrderScreen;
+using eShop.UseCases.ProcessOrderScreen;
+using eShop.UseCases.SearchProductScreen;
+using eShop.UseCases.ShoppingCartScreen;
+using eShop.UseCases.TransactionsOrderScreen;
+using eShop.UseCases.ViewProductScreen;
+using eShop.Web.Common.JsInterOp;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using eShop.Web.Data;
-using eShop.UseCases.SearchProductScreen;
-using eShop.UseCases.PluginInterfaces.DataStore;
-using eShop.ShoppingCart.LocalStorage;
-#if DEBUG
-    using eShop.DataStore.HardCoded;
-#else
-    using eShop.DataStore.SQL.Dapper;
-#endif
-
-using eShop.UseCases.ViewProductScreen;
-using eShop.UseCases.PluginInterfaces.UI;
-using eShop.UseCases.ShoppingCartScreen;
-using eShop.UseCases.PluginInterfaces.StateStore;
-using eShop.StateStore.LocalStorage;
-using eShop.CoreBusiness.Services;
-using eShop.UseCases.OrderConfirmationScreen;
-using eShop.UseCases.OutstandingOrderScreen;
-using eShop.UseCases.ProcessedOrderScreen;
-using eShop.UseCases.ProcessOrderScreen;
-using eShop.UseCases.AddProductUseCase;
-using eShop.Web.Common.JsInterOp;
-using eShop.UseCases.EditProductScreen;
-using eShop.UseCases.DeleteProductUseCase;
-using eShop.UseCases.TransactionsOrderScreen;
 
 namespace eShop.Web
 {
@@ -53,32 +41,37 @@ namespace eShop.Web
             //Configuration.GetConnectionString
 
             services.AddControllers();
-            services.AddAuthentication("eShop.CookieAuth")
-                .AddCookie("eShop.CookieAuth", config =>
-                {
-                    config.Cookie.Name = "eShop.CookieAuth";
-                    config.LoginPath = "/authenticate";
-                });
+            //services.AddAuthentication("eShop.CookieAuth").AddCookie("eShop.CookieAuth", config =>
+            //{
+            //    config.Cookie.Name = "eShop.CookieAuth";
+            //    config.LoginPath = "/authenticate";
+            //});
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", p => p.RequireClaim("Position", "Admin"));
+                options.AddPolicy("UserOnly", p => p.RequireClaim("Position", "User"));
+            });
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
             services.AddTransient<JsNavigator>();
-#if DEBUG
-            services.AddSingleton<IProductRepository, ProductRepository>();
-            services.AddSingleton<IOrderRepository, OrderRepository>();
-#else
+
+            //services.AddSingleton<IProductRepository, ProductRepository>();
+            //services.AddSingleton<IOrderRepository, OrderRepository>();
+
             services.AddTransient<IDataAccess>(sp => new DataAccess(Configuration.GetConnectionString("Default")));
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
-#endif
+
 
             services.AddScoped<IShoppingCartStateStore, ShoppingCartStateStore>();
 
             services.AddTransient<IOrderService, OrderService>();
 
             services.AddTransient<IShoppingCart, eShop.ShoppingCart.LocalStorage.ShoppingCart>();
-            
+
             services.AddTransient<ISearchProductUseCase, SearchProductUseCase>();
             services.AddTransient<IViewProductUseCase, ViewProductUseCase>();
             services.AddTransient<IAddProductUseCase, AddProductUseCase>();
@@ -125,6 +118,7 @@ namespace eShop.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });

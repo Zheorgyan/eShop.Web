@@ -1,0 +1,15 @@
+﻿@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <NotAuthorized>
+        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Register">Зарегистрироваться</a>
+        
+        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Login">Войти</a>
+    </NotAuthorized>
+    <Authorized>
+        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Manage">Привет, @context.User.Identity.Name!</a>
+        <form class="py-2 d-none d-md-inline-block" action="/Identity/Account/Logout?returnUrl=%2F" method="post">
+            <button type="submit" class="nav-link btn btn-link">Выйти</button>
+        </form>
+    </Authorized>
+</AuthorizeView>

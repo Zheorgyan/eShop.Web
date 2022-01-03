@@ -1,6 +1,6 @@
 ﻿@page "/editproduct/{productId}"
 
-@attribute [Authorize]
+@attribute [Authorize(Policy ="AdminOnly")]
 
 @inject IEditProductUseCase EditProductUseCase
 @inject NavigationManager NavigationManager

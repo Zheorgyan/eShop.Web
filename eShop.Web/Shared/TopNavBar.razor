@@ -3,9 +3,7 @@
         <li class="nav-item">
             <a class="navbar-brand" href="">eShop</a>
         </li>
-        <AuthorizeView>
-            <Authorized>
-                <li class="nav-item">
+        <li class="nav-item">
                     <a class="nav-link" href="outstandingorders">Невыполненные заказы</a>
                 </li>
                 <li class="nav-item">
@@ -16,22 +14,13 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="transactions">Отчет о заказах</a>
-                </li>
-            </Authorized>
-        </AuthorizeView>        
+        </li>
+
         <li class="nav-item ml-auto">
-            <AuthorizeView>
-                <Authorized>
-                    <NavLink class="nav-link" href="/logout">
-                        Выйти
-                    </NavLink>
-                </Authorized>
-                <NotAuthorized>
-                    <NavLink class="nav-link" href="cart">
-                        <CartComponent></CartComponent>
-                    </NavLink>
-                </NotAuthorized>
-            </AuthorizeView>
+            <LoginDisplayComponent></LoginDisplayComponent>
+            <NavLink class="nav-link" href="cart">
+                <CartComponent></CartComponent>
+            </NavLink>
         </li>
     </ul>
 </div>

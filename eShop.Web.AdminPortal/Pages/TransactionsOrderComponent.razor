@@ -1,6 +1,6 @@
 ﻿@page "/transactions"
 
-@attribute [Authorize]
+@attribute [Authorize(Policy ="AdminOnly")]
 
 @inject IJSRuntime JSRuntime
 @inject IViewOrdersUseCase ViewOrdersUseCase
