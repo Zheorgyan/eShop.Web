@@ -1,7 +1,10 @@
-﻿namespace eShop.CoreBusiness.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace eShop.CoreBusiness.Models
 {
     public class OrderLineItem
     {
+        [Key]
         public int? LineItemId { get; set; }
         public int ProductId { get; set; }
         public double Price { get; set; }

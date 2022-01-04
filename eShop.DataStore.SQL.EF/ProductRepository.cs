@@ -1,11 +1,12 @@
 ﻿using eShop.CoreBusiness.Models;
+using eShop.UseCases.PluginInterfaces.DataStore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace eShop.DataStore.SQL.EF
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly eShopContext db;
 
@@ -56,14 +57,8 @@ namespace eShop.DataStore.SQL.EF
 
         public void UpdateProduct(Product product)
         {
-            var prod = db.Products.Find(product.ProductId);
-            prod.ProductId = product.ProductId;
-            prod.Name = product.Name;
-            prod.Author = product.Author;
-            prod.Brand = product.Brand;
-            prod.Description = product.Description;
-            prod.Price = product.Price;
-            prod.ImageLink = product.ImageLink;
+            if (db.Products.Find(product.ProductId) == null) return;
+            db.Products.Update(product);
             db.SaveChanges();
         }
     }

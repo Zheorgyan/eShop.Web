@@ -1,13 +1,12 @@
 ﻿using eShop.CoreBusiness.Models;
+using eShop.UseCases.PluginInterfaces.DataStore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eShop.DataStore.SQL.EF
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly eShopContext db;
 
@@ -19,68 +18,26 @@ namespace eShop.DataStore.SQL.EF
         public int CreateOrder(Order order)
         {
             db.Order.Add(order);
-            order.LineItems.ForEach(x => x.OrderId == );
-            var sql =
-                @"INSERT INTO [dbo].[Order]
-                       ([DatePlaced]
-                       ,[DateProcessing]
-                       ,[DateProcessed]
-                       ,[CustomerName]
-                       ,[CustomerAddress]
-                       ,[CustomerCity]
-                       ,[CustomerStateProvince]
-                       ,[CustomerCountry]
-                       ,[AdminUser]
-                       ,[UniqueId])
-                 OUTPUT INSERTED.OrderId
-                 VALUES
-                       (@DatePlaced
-                        ,@DateProcessing
-                        ,@DateProcessed
-                        ,@CustomerName
-                        ,@CustomerAddress
-                        ,@CustomerCity
-                        ,@CustomerStateProvince
-                        ,@CustomerCountry
-                        ,@AdminUser
-                        ,@UniqueId)";
+            db.SaveChanges();
 
-            var orderId = dataAccess.QuerySingle<int, Order>(sql, order);
+            order.LineItems.ForEach(x => db.OrderLineItem.Add(x));
+            db.SaveChanges();
 
-            sql = @"INSERT INTO [dbo].[OrderLineItem]
-                           ([ProductId]
-                           ,[OrderId]
-                           ,[Quantity]
-                           ,[Price])
-                     VALUES
-                           (@ProductId
-                           ,@OrderId
-                           ,@Quantity
-                           ,@Price)";
-
-            order.LineItems.ForEach(x => x.OrderId = orderId);
-            dataAccess.ExecuteCommand(sql, order.LineItems);
-
+            int.TryParse(db.Order.Where(x => x.OrderId == order.OrderId).Max(x => x.OrderId == order.OrderId).ToString(), out int orderId);
             return orderId;
-
         }
 
         public IEnumerable<OrderLineItem> GetLineItemsByOrderId(int orderId)
         {
-            var sql = "SELECT * FROM OrderLineItem WHERE OrderId = @OrderId";
-            var lineItems = dataAccess.Query<OrderLineItem, dynamic>(sql, new { OrderId = orderId });
+            var oli = db.OrderLineItem.Where(x => x.OrderId == orderId);
 
-            sql = "SELECT * FROM Product WHERE ProductId = @ProductId";
-            lineItems.ForEach(x => x.Product = dataAccess.QuerySingle<Product, dynamic>(sql, new { ProductId = x.ProductId }));
+            var orderLi = oli.Where(x => x.Product.ProductId == x.ProductId);
 
-            return lineItems;
+            return orderLi;
         }
 
         public Order GetOrder(int id)
         {
-            //var sql = "SELECT * FROM [ORDER] WHERE OrderId = @OrderId";
-            //var order = dataAccess.QuerySingle<Order, dynamic>(sql, new { OrderId = id });
-            //order.LineItems = GetLineItemsByOrderId(order.OrderId.Value).ToList();
             return db.Order.Where(x => x.OrderId == id) as Order;
         }
 
@@ -111,29 +68,16 @@ namespace eShop.DataStore.SQL.EF
 
         public void UpdateOrder(Order order)
         {
-            var sql = @"UPDATE [Order]
-                          SET [DatePlaced] = @DatePlaced
-                          ,[DateProcessing] = @DateProcessing
-                          ,[DateProcessed] = @DateProcessed
-                          ,[CustomerName] = @CustomerName
-                          ,[CustomerAddress] = @CustomerAddress
-                          ,[CustomerCity] = @CustomerCity
-                          ,[CustomerStateProvince] = @CustomerStateProvince
-                          ,[CustomerCountry] = @CustomerCountry
-                          ,[AdminUser] = @AdminUser
-                          ,[UniqueId] = @UniqueId
-                      WHERE OrderId = @OrderId";
+            int.TryParse(order.OrderId.ToString(), out int orderId);
+            var ord = GetOrder(orderId);
+            if (ord == null) return;
 
-            dataAccess.ExecuteCommand<Order>(sql, order);
+            db.Order.Update(ord);
+            db.SaveChanges();
 
-            sql = @"UPDATE [OrderLineItem]
-                       SET [ProductId] = @ProductId
-                          ,[OrderId] = @OrderId
-                          ,[Quantity] = @Quantity
-                          ,[Price] = @Price
-                     WHERE LineItemId = @LineItemId";
+            order.LineItems.ForEach(x => { db.OrderLineItem.Update(x); });
+            db.SaveChanges();
 
-            dataAccess.ExecuteCommand<List<OrderLineItem>>(sql, order.LineItems);
         }
     }
 }

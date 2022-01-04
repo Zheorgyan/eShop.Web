@@ -1,7 +1,7 @@
 using eShop.CoreBusiness.Services;
 //using eShop.DataStore.HardCoded;
-
-using eShop.DataStore.SQL.Dapper;
+//using eShop.DataStore.SQL.Dapper;
+using eShop.DataStore.SQL.EF;
 using eShop.StateStore.LocalStorage;
 using eShop.UseCases.AddProductUseCase;
 using eShop.UseCases.EditProductScreen;
@@ -19,6 +19,7 @@ using eShop.UseCases.ViewProductScreen;
 using eShop.Web.Common.JsInterOp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -61,7 +62,10 @@ namespace eShop.Web
             //services.AddSingleton<IProductRepository, ProductRepository>();
             //services.AddSingleton<IOrderRepository, OrderRepository>();
 
-            services.AddTransient<IDataAccess>(sp => new DataAccess(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<eShopContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
 
@@ -70,7 +74,7 @@ namespace eShop.Web
 
             services.AddTransient<IOrderService, OrderService>();
 
-            services.AddTransient<IShoppingCart, eShop.ShoppingCart.LocalStorage.ShoppingCart>();
+            services.AddTransient<IShoppingCart, ShoppingCart.LocalStorage.ShoppingCart>();
 
             services.AddTransient<ISearchProductUseCase, SearchProductUseCase>();
             services.AddTransient<IViewProductUseCase, ViewProductUseCase>();
@@ -80,7 +84,7 @@ namespace eShop.Web
 
 
             services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>();
-            services.AddTransient<UseCases.ShoppingCartScreen.IDeleteProductUseCase, UseCases.ShoppingCartScreen.DeleteProductUseCase>();
+            services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
             services.AddTransient<IUpdateQuantityUseCase, UpdateQuantityUseCase>();
             services.AddTransient<IViewShoppingCartUseCase, ViewShoppingCartUseCase>();
             services.AddTransient<IPlaceOrderUseCase, PlaceOrderUseCase>();

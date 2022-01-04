@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.DataStore.SQL.Dapper"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeedData", "SeedData\SeedData.csproj", "{5AA15EEA-4465-4011-A234-86DF97269E28}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.DataStore.SQL.EF", "eShop.DataStore.SQL.EF\eShop.DataStore.SQL.EF.csproj", "{E66E900B-0272-4CB2-9A83-CA4E89C6F823}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{5AA15EEA-4465-4011-A234-86DF97269E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AA15EEA-4465-4011-A234-86DF97269E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AA15EEA-4465-4011-A234-86DF97269E28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E66E900B-0272-4CB2-9A83-CA4E89C6F823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E66E900B-0272-4CB2-9A83-CA4E89C6F823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E66E900B-0272-4CB2-9A83-CA4E89C6F823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E66E900B-0272-4CB2-9A83-CA4E89C6F823}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{2FE11236-ED48-4BD1-94B9-BECEBFE16BD1} = {C58B85A0-3475-4F50-B5B6-10E8AE6B2EBC}
 		{5C87601D-F32D-42C6-A870-0830532E5C76} = {C58B85A0-3475-4F50-B5B6-10E8AE6B2EBC}
 		{DA2EC15D-7E9A-4D53-9A74-C502A5279F8B} = {62A7E232-5BE7-44CB-ABA2-1D2DE4542847}
+		{E66E900B-0272-4CB2-9A83-CA4E89C6F823} = {62A7E232-5BE7-44CB-ABA2-1D2DE4542847}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4031F807-3CFF-4677-BBAF-30F53D335F69}

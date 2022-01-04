@@ -50,7 +50,17 @@
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Прочие файлы",
       "ColorIndex": -1
+    },
+    "1711d197-3a66-4c2f-bd4e-adb07d6523e9": {
+      "ProjectGuid": "1711d197-3a66-4c2f-bd4e-adb07d6523e9",
+      "DisplayName": "eShop.ShoppingCart.LocalStorage",
+      "ColorIndex": 9
+    },
+    "3a477270-8e24-41ce-a8cd-3b5f8ce26755": {
+      "ProjectGuid": "3a477270-8e24-41ce-a8cd-3b5f8ce26755",
+      "DisplayName": "eShop.StateStore.LocalStorage",
+      "ColorIndex": 10
     }
   },
-  "NextColorIndex": 9
+  "NextColorIndex": 11
 }
