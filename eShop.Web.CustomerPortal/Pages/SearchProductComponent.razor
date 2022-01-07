@@ -10,21 +10,10 @@
 
     @if (products != null && products.Count() > 0)
     {
-        int i = 0;
-
         <div class="row">
             @foreach (var product in products)
             {
-                i++;
-                if (i % 6 != 0)
-                {
-                    <ProductCardComponent Product="product"></ProductCardComponent>
-                }
-                else
-                {
-                    @*<div class="w-100"></div>*@
-                }
-
+                <ProductCardComponent Product="product"></ProductCardComponent>
             }
         </div>
     }

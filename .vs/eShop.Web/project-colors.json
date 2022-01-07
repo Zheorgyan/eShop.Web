@@ -60,7 +60,12 @@
       "ProjectGuid": "3a477270-8e24-41ce-a8cd-3b5f8ce26755",
       "DisplayName": "eShop.StateStore.LocalStorage",
       "ColorIndex": 10
+    },
+    "e66e900b-0272-4cb2-9a83-ca4e89c6f823": {
+      "ProjectGuid": "e66e900b-0272-4cb2-9a83-ca4e89c6f823",
+      "DisplayName": "eShop.DataStore.SQL.EF",
+      "ColorIndex": 11
     }
   },
-  "NextColorIndex": 11
+  "NextColorIndex": 12
 }

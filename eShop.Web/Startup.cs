@@ -1,7 +1,7 @@
 using eShop.CoreBusiness.Services;
 //using eShop.DataStore.HardCoded;
-//using eShop.DataStore.SQL.Dapper;
-using eShop.DataStore.SQL.EF;
+using eShop.DataStore.SQL.Dapper;
+//using eShop.DataStore.SQL.EF;
 using eShop.StateStore.LocalStorage;
 using eShop.UseCases.AddProductUseCase;
 using eShop.UseCases.EditProductScreen;
@@ -62,10 +62,13 @@ namespace eShop.Web
             //services.AddSingleton<IProductRepository, ProductRepository>();
             //services.AddSingleton<IOrderRepository, OrderRepository>();
 
-            services.AddDbContext<eShopContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
-            });
+            //services.AddDbContext<eShopContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            //});
+
+            services.AddTransient<IDataAccess>(sp => new DataAccess(Configuration.GetConnectionString("Default")));
+
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
 

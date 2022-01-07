@@ -1,11 +1,11 @@
 ﻿@page "/product/{id:int}"
 
+
+
 @inject NavigationManager NavigationManager
 @inject IViewProductUseCase ViewProductUseCase
 @inject IAddProductToCartUseCase  addProductToCartUseCase
 @inject eShop.UseCases.DeleteProductUseCase.IDeleteProductUseCase DeleteProductUseCase
-
-<h3>Детали заказа</h3>
 
 <div class="card" style="width: 28rem;">
     <div class="card-body">
@@ -19,15 +19,13 @@
         </p>
         <p class="card-text">@product.Description</p>
     </div>
-    <AuthorizeView>
-        <NotAuthorized>
-            <button class="button btn-primary" @onclick="AddToCart">Добавить в корзину</button>
-        </NotAuthorized>
+    <button class="button btn-primary" @onclick="AddToCart">Добавить в корзину</button>
+    <AuthorizeView Policy="AdminOnly">
         <Authorized>
             <button class="button btn-primary" @onclick="EditProduct">Редактировать</button>
             <button class="button btn-primary" @onclick="DeleteProduct">Удалить</button>
         </Authorized>
-    </AuthorizeView>    
+    </AuthorizeView>
 </div>
 <br/>
 <NavLink href="products">Вернуться</NavLink>

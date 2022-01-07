@@ -8,7 +8,7 @@ namespace eShop.DataStore.SQL.EF
     {
         public eShopContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Product> Product { get; set; }
 
         public DbSet<Order> Order { get; set; }
 

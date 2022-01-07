@@ -14,7 +14,8 @@ namespace eShop.UseCases.ViewProductScreen
 
         public Product Execute(int id)
         {
-            return productRepository.GetProduct(id);
+            var product = productRepository.GetProduct(id);
+            return product;
         }
     }
 }

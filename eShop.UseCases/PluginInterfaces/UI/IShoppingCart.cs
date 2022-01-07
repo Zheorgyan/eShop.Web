@@ -9,7 +9,7 @@ namespace eShop.UseCases.PluginInterfaces.UI
     public interface IShoppingCart
     {
         Task<Order> GetOrderAsync();
-        Task<Order> AddProductAsync(Product product);        
+        Task<Order> AddProductAsync(Product product);
         Task<Order> UpdateQuantityAsync(int productId, int quanity);
         Task UpdateOrderAsync(Order order);
         Task<Order> DeleteProductAsync(int productId);

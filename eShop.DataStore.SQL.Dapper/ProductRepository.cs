@@ -50,7 +50,6 @@ namespace eShop.DataStore.SQL.Dapper
                                 ,@Description)";
 
             dataAccess.ExecuteCommand(sql, product);
-            products.Add(product);
         }
 
         public void DeleteProduct(int productId)
@@ -58,7 +57,7 @@ namespace eShop.DataStore.SQL.Dapper
             var prod = GetProduct(productId);
             if (prod == null) return;
 
-            var sql = @"DELETE FROM [dbo].[Product] WHERE [ProductId] = @ProductId";
+            var sql = $@"DELETE FROM Product WHERE ProductId = {productId}";
             dataAccess.ExecuteCommand(sql, productId);
         }
 

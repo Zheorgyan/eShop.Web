@@ -17,13 +17,13 @@ namespace eShop.DataStore.SQL.EF
 
         public void AddProduct(Product product)
         {
-            if (db.Products.Any(x => x.Name.Equals(product.Name, StringComparison.OrdinalIgnoreCase)))
+            if (db.Product.Any(x => x.Name.Equals(product.Name, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
             }
-            if (db.Products != null && db.Products.Count() > 0)
+            if (db.Product != null && db.Product.Count() > 0)
             {
-                var maxId = db.Products.Max(x => x.ProductId);
+                var maxId = db.Product.Max(x => x.ProductId);
                 product.ProductId = maxId + 1;
             }
             else
@@ -31,34 +31,35 @@ namespace eShop.DataStore.SQL.EF
                 product.ProductId = 1;
             }
 
-            db.Products.Add(product);
+            db.Product.Add(product);
             db.SaveChanges();
         }
 
         public void DeleteProduct(int productId)
         {
-            var prod = db.Products.Find(productId);
+            var prod = db.Product.Find(productId);
             if (prod == null) return;
-            db.Products.Remove(prod);
+            db.Product.Remove(prod);
             db.SaveChanges();
         }
 
         public Product GetProduct(int id)
         {
-            return db.Products.Where(x => x.ProductId == id) as Product;
+            var product = db.Product.FirstOrDefault(x => x.ProductId == id);
+            return product;
         }
 
         public IEnumerable<Product> GetProducts(string filter = null)
         {
-            if (string.IsNullOrWhiteSpace(filter)) return db.Products.ToList();
-            else return db.Products.Where(x => x.Name == filter || x.Author == filter || x.Brand == filter).ToList();
+            if (string.IsNullOrWhiteSpace(filter)) return db.Product;
+            else return db.Product.Where(x => x.Name == filter || x.Author == filter || x.Brand == filter);
 
         }
 
         public void UpdateProduct(Product product)
         {
-            if (db.Products.Find(product.ProductId) == null) return;
-            db.Products.Update(product);
+            if (db.Product.Find(product.ProductId) == null) return;
+            db.Product.Update(product);
             db.SaveChanges();
         }
     }

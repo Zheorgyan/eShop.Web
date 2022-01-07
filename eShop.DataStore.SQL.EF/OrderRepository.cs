@@ -30,7 +30,6 @@ namespace eShop.DataStore.SQL.EF
         public IEnumerable<OrderLineItem> GetLineItemsByOrderId(int orderId)
         {
             var oli = db.OrderLineItem.Where(x => x.OrderId == orderId);
-
             var orderLi = oli.Where(x => x.Product.ProductId == x.ProductId);
 
             return orderLi;
@@ -63,7 +62,7 @@ namespace eShop.DataStore.SQL.EF
 
         public IEnumerable<Order> SearchOrders(string customerName, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            return db.Order.Where(x => x.CustomerName == customerName);
         }
 
         public void UpdateOrder(Order order)
@@ -71,11 +70,10 @@ namespace eShop.DataStore.SQL.EF
             int.TryParse(order.OrderId.ToString(), out int orderId);
             var ord = GetOrder(orderId);
             if (ord == null) return;
-
             db.Order.Update(ord);
             db.SaveChanges();
 
-            order.LineItems.ForEach(x => { db.OrderLineItem.Update(x); });
+            order.LineItems.ForEach(x => db.OrderLineItem.Update(x));
             db.SaveChanges();
 
         }
