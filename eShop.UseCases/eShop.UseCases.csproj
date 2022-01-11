@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="AdminPortal\AddProductScreen\Новая папка\**" />
+    <Compile Remove="AdminPortal\ProductScreen\AddProductScreen\Новая папка\**" />
     <Compile Remove="AdminPortal\Новая папка1\**" />
-    <EmbeddedResource Remove="AdminPortal\AddProductScreen\Новая папка\**" />
+    <EmbeddedResource Remove="AdminPortal\ProductScreen\AddProductScreen\Новая папка\**" />
     <EmbeddedResource Remove="AdminPortal\Новая папка1\**" />
-    <None Remove="AdminPortal\AddProductScreen\Новая папка\**" />
+    <None Remove="AdminPortal\ProductScreen\AddProductScreen\Новая папка\**" />
     <None Remove="AdminPortal\Новая папка1\**" />
   </ItemGroup>
 

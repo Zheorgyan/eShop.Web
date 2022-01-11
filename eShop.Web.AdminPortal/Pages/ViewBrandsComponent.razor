@@ -1,0 +1,71 @@
+﻿@page "/brands"
+@*@attribute [Authorize(Policy = "AdminOnly")]*@
+
+@inject NavigationManager NavigationManager
+@inject IViewBrandsUseCase ViewBrandsUseCase
+@inject IDeleteBrandUseCase DeleteBrandUseCase
+
+<h3>Управление издательствами</h3>
+<br />
+@if (categories != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Наименование</th>
+                <th>Описание</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var brand in brands)
+            {
+                <tr>
+                    <td>@brand.Name</td>
+                    <td>@brand.Description</td>
+                    <td>
+                        <button type="button" @onclick="@(() => EditBrand(brand))" class="btn btn-link">Редактировать</button>
+                      <button type="button" @onclick="@(() => DeleteBrand(brand.BrandId))" class="btn btn-link">Удалить</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<button type="button" @onclick="OnClickAddCategory" class="btn btn-primary">Добавить категорию</button>
+
+
+
+@code {
+
+    private List<Brand> brands;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadBrands();
+    }
+
+    private void OnClickAddBrand()
+    {
+        NavigationManager.NavigateTo("/addbrand");
+    }
+
+    private void EditCategory(Brand brand)
+    {
+        NavigationManager.NavigateTo($"/editbrand/{brand.BrandId}");
+    }
+
+    private void DeleteCategory(int brandId)
+    {
+        DeleteBrandUseCase.Delete(brandId);
+        LoadBrands();
+    }
+
+    private void LoadBrands()
+    {
+        brands = ViewBrandsUseCase.Execute()?.ToList();
+    }
+}

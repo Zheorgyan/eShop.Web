@@ -12,7 +12,6 @@ namespace eShop.DataStore.SQL.Dapper
     public class DataAccess : IDataAccess
     {
         private readonly string connectionString;
-
         public DataAccess(string connectionString)
         {
             this.connectionString = connectionString;

@@ -17,7 +17,8 @@ namespace eShop.DataStore.HardCoded
                 new Product
                 { 
                     ProductId = 495,
-                    Brand = "Прогресс книга",
+                    CategoryId = 1,
+                    BrandId = 1,
                     Author = "Рихтер Джеффри",
                     Name = "CLR via C#. Программирование на платформе Microsoft .NET Framework 4.5 на языке C#. 4-е изд.", 
                     Price = 1825,
@@ -26,7 +27,8 @@ namespace eShop.DataStore.HardCoded
                 new Product
                 {
                     ProductId = 488,
-                    Brand = "Бомбора",
+                    CategoryId = 1,
+                    BrandId = 2,
                     Author = "Васильев Алексей Николаевич",
                     Name = "Программирование на C# для начинающих. Особенности языка",
                     Price = 924,
@@ -36,7 +38,8 @@ namespace eShop.DataStore.HardCoded
                 new Product
                 {
                     ProductId = 477,
-                    Brand = "Вильямс",
+                    CategoryId = 1,
+                    BrandId = 3,
                     Author = "Джон Скит",
                     Name = "C# для профессионалов. Тонкости программирования",
                     Price = 2484,
@@ -45,7 +48,8 @@ namespace eShop.DataStore.HardCoded
                 new Product
                 { 
                     ProductId = 439,
-                    Brand = "БХВ-Петербург",
+                    CategoryId = 1,
+                    BrandId = 4,
                     Author = "Фленов Михаил Е.",
                     Name = "Библия C#. 5-е изд., перераб. и доп",
                     Price = 770,
@@ -57,6 +61,17 @@ namespace eShop.DataStore.HardCoded
 
         public void AddProduct(Product product)
         {
+            if (products.Any(x => x.Name.Equals(product.Name, StringComparison.CurrentCultureIgnoreCase))) return;
+
+            if (products != null && products.Count > 0)
+            {
+                var maxId = products.Max(x => x.CategoryId);
+                product.CategoryId = maxId + 1;
+            }
+            else
+            {
+                product.CategoryId = 1;
+            }
             products.Add(product);
         }
 
@@ -91,7 +106,8 @@ namespace eShop.DataStore.HardCoded
                 productToUpdate.Price = product.Price;
                 productToUpdate.Description = product.Description;
                 productToUpdate.Author = product.Author;
-                productToUpdate.Brand = product.Brand;
+                productToUpdate.BrandId = product.BrandId;
+                productToUpdate.CategoryId = product.CategoryId;
             }
         }
     }

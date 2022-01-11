@@ -34,7 +34,8 @@ namespace eShop.DataStore.SQL.Dapper
             }
             var sql = @"INSERT INTO [dbo].[Product]
                                 ([ProductId]
-                                ,[Brand]
+                                ,[BrandId]
+                                ,[CategoryId]
                                 ,[Author]
                                 ,[Name]
                                 ,[Price]
@@ -42,7 +43,8 @@ namespace eShop.DataStore.SQL.Dapper
                                 ,[Description])
                             VALUES
                                 (@ProductId
-                                ,@Brand
+                                ,@BrandId
+                                ,@CategoryId
                                 ,@Author
                                 ,@Name
                                 ,@Price
@@ -83,7 +85,8 @@ namespace eShop.DataStore.SQL.Dapper
 
             var sql = @"UPDATE [Product]
                           SET [ProductId] = @ProductId
-                          ,[Brand] = @Brand
+                          ,[BrandId] = @BrandId
+                          ,[CategoryId] = @CategoryId
                           ,[Author] = @Author
                           ,[Name] = @Name
                           ,[Price] = @Price

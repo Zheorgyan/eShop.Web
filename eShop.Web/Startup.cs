@@ -4,6 +4,8 @@ using eShop.DataStore.SQL.Dapper;
 //using eShop.DataStore.SQL.EF;
 using eShop.StateStore.LocalStorage;
 using eShop.UseCases.AddProductUseCase;
+using eShop.UseCases.BrandsScreen;
+using eShop.UseCases.CategoriesScreen;
 using eShop.UseCases.EditProductScreen;
 using eShop.UseCases.OrderConfirmationScreen;
 using eShop.UseCases.OutstandingOrderScreen;
@@ -19,7 +21,7 @@ using eShop.UseCases.ViewProductScreen;
 using eShop.Web.Common.JsInterOp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -59,18 +61,26 @@ namespace eShop.Web
 
             services.AddTransient<JsNavigator>();
 
-            //services.AddSingleton<IProductRepository, ProductRepository>();
-            //services.AddSingleton<IOrderRepository, OrderRepository>();
+            //HardCoded
+            services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<IOrderRepository, OrderRepository>();
 
+            //EF
             //services.AddDbContext<eShopContext>(options =>
             //{
             //    options.UseSqlServer(Configuration.GetConnectionString("Default"));
             //});
 
-            services.AddTransient<IDataAccess>(sp => new DataAccess(Configuration.GetConnectionString("Default")));
+            //Dapper
+            //services.AddTransient<IDataAccess>(sp => new DataAccess(Configuration.GetConnectionString("Default")));
+
+            services.AddSingleton<DapperContext>();
+            services.AddSingleton<DapperDb>();
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IBrandRepository, IBrandRepository>();
 
 
             services.AddScoped<IShoppingCartStateStore, ShoppingCartStateStore>();
@@ -99,6 +109,19 @@ namespace eShop.Web
             services.AddTransient<IProcessOrderUseCase, ProcessOrderUseCase>();
             services.AddTransient<IGetOrdersUseCase, GetOrdersUseCase>();
             services.AddTransient<IViewOrdersUseCase, ViewOrdersUseCase>();
+
+            services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
+            services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();
+            services.AddTransient<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
+            services.AddTransient<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
+            services.AddTransient<IEditCategoryUseCase, EditCategoryUseCase>();
+
+            services.AddTransient<IViewBrandsUseCase, ViewBrandsUseCase>();
+            services.AddTransient<IAddBrandUseCase, AddBrandUseCase>();
+            services.AddTransient<IDeleteBrandUseCase, DeleteBrandUseCase>();
+            services.AddTransient<IGetBrandByIdUseCase, GetBrandByIdUseCase>();
+            services.AddTransient<IEditBrandUseCase, EditBrandUseCase>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,12 +6,15 @@
 @inject IViewProductUseCase ViewProductUseCase
 @inject IAddProductToCartUseCase  addProductToCartUseCase
 @inject eShop.UseCases.DeleteProductUseCase.IDeleteProductUseCase DeleteProductUseCase
+@inject IGetCategoryByIdUseCase GetCategoryById
+@inject IGetBrandByIdUseCase GetBrandById
 
 <div class="card" style="width: 28rem;">
     <div class="card-body">
         <img src="@product.ImageLink" width="100%"/>
+        <h5 class="card-title">@category.Name</h5>
         <h5 class="card-title">@product.Name</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@product.Brand</h6>
+        <h6 class="card-subtitle mb-2 text-muted">@brand.Name</h6>
         <h6 class="card-subtitle mb-2 text-muted">@product.Author</h6>
         <hr />
         <p>
@@ -32,7 +35,8 @@
 
 @code {
     private Product product;
-
+    private Category category;
+    private Brand brand;
     [Parameter]
     public int Id { get; set; }
 
@@ -41,7 +45,8 @@
         base.OnParametersSet();
 
         if (Id > 0) product = ViewProductUseCase.Execute(Id);
-
+        category = GetCategoryById.Execute(product.CategoryId);
+        brand = GetBrandById.Execute(brand.BrandId);
     }
 
     private void AddToCart()

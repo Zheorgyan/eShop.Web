@@ -1,8 +1,10 @@
 ﻿@page "/addproduct"
-@attribute [Authorize(Policy ="AdminOnly")]
+@*@attribute [Authorize(Policy ="AdminOnly")]*@
 
 @inject IAddProductUseCase AddProductUseCase
 @inject NavigationManager NavigationManager
+@inject IViewCategoriesUseCase ViewCategoriesUseCase
+@inject IViewBrandsUseCase ViewBrandsUseCase
 
 <h3>Добавить продукт</h3>
 <br />
@@ -11,7 +13,26 @@
 <EditForm Model="product" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
-
+    <div class="form-group">
+        <label for="category">Категория</label>
+        <select id="category" @bind="product.CategoryId" class="form-control">
+            <option selected></option>
+            @foreach (var cat in categories)
+            {
+                <option value="@cat.CategoryId">@cat.Name</option>
+            }
+        </select>
+    </div>
+        <div class="form-group">
+        <label for="brand">Издательство</label>
+        <select id="brand" @bind="product.BrandId" class="form-control">
+            <option selected></option>
+            @foreach (var brand in brands)
+            {
+                <option value="@brand.BrandId">@brand.Name</option>
+            }
+        </select>
+    </div>
     <div class="form-group">
         <label for="name">Наименование</label>
         <InputText id="name" @bind-Value="product.Name" class="form-control"></InputText>
@@ -19,10 +40,6 @@
     <div class="form-group">
         <label for="img">Ссылка изображения обложки</label>
         <InputText id="img" @bind-Value="product.ImageLink" class="form-control"></InputText>
-    </div>
-    <div class="form-group">
-        <label for="brand">Издательство</label>
-        <InputText id="brand" @bind-Value="product.Brand" class="form-control"></InputText>
     </div>
     <div class="form-group">
         <label for="price">Цена</label>
@@ -48,11 +65,14 @@
 @code {
 
     private Product product;
-
+    private IEnumerable<Category> categories;
+    private IEnumerable<Brand> brands;
     protected override void OnInitialized()
     {
         base.OnInitialized();
         product = new Product();
+        categories = ViewCategoriesUseCase.Execute();
+        brands = ViewBrandsUseCase.Execute();
     }
 
     private void OnValidSubmit()
