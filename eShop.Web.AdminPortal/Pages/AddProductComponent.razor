@@ -1,10 +1,12 @@
 ﻿@page "/addproduct"
-@*@attribute [Authorize(Policy ="AdminOnly")]*@
+@attribute [Authorize(Policy ="AdminOnly")]
 
 @inject IAddProductUseCase AddProductUseCase
 @inject NavigationManager NavigationManager
 @inject IViewCategoriesUseCase ViewCategoriesUseCase
 @inject IViewBrandsUseCase ViewBrandsUseCase
+@inject IViewAuthorsUseCase ViewAuthorsUseCase
+
 
 <h3>Добавить продукт</h3>
 <br />
@@ -23,7 +25,7 @@
             }
         </select>
     </div>
-        <div class="form-group">
+    <div class="form-group">
         <label for="brand">Издательство</label>
         <select id="brand" @bind="product.BrandId" class="form-control">
             <option selected></option>
@@ -48,7 +50,13 @@
 
     <div class="form-group">
         <label for="author">Автор</label>
-        <InputText id="author" @bind-Value="product.Author" class="form-control"></InputText>
+        <select id="author" @bind="authorForProduct.AuthorId" class="form-control">
+            <option selected></option>
+            @foreach (var author in authors)
+            {
+                <option value="@author.AuthorId">@author.FirstName @author.LastName</option>
+            }
+        </select>
     </div>
     <div class="form-group">
         <label for="descr">Описание</label>
@@ -65,18 +73,23 @@
 @code {
 
     private Product product;
+    private AuthorForProduct authorForProduct;
     private IEnumerable<Category> categories;
     private IEnumerable<Brand> brands;
+    private IEnumerable<Author> authors;
     protected override void OnInitialized()
     {
         base.OnInitialized();
         product = new Product();
+        authorForProduct = new AuthorForProduct();
         categories = ViewCategoriesUseCase.Execute();
         brands = ViewBrandsUseCase.Execute();
+        authors = ViewAuthorsUseCase.Execute();
     }
 
     private void OnValidSubmit()
     {
+        product.AuthorId = authorForProduct.AuthorId;
         AddProductUseCase.Execute(product);
         NavigationManager.NavigateTo("/products");
     }

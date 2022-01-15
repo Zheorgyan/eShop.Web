@@ -21,7 +21,6 @@ namespace eShop.DataStore.SQL.Dapper
             var sql =
                 @"INSERT INTO [dbo].[Order]
                        ([DatePlaced]
-                       ,[DateProcessing]
                        ,[DateProcessed]
                        ,[CustomerName]
                        ,[CustomerAddress]
@@ -29,11 +28,11 @@ namespace eShop.DataStore.SQL.Dapper
                        ,[CustomerStateProvince]
                        ,[CustomerCountry]
                        ,[AdminUser]
-                       ,[UniqueId])
+                       ,[UniqueId]
+                       ,[UserId])
                  OUTPUT INSERTED.OrderId
                  VALUES
                        (@DatePlaced
-                        ,@DateProcessing
                         ,@DateProcessed
                         ,@CustomerName
                         ,@CustomerAddress
@@ -41,8 +40,8 @@ namespace eShop.DataStore.SQL.Dapper
                         ,@CustomerStateProvince
                         ,@CustomerCountry
                         ,@AdminUser
-                        ,@UniqueId)";
-
+                        ,@UniqueId
+                        ,@UserId)";
             var orderId = dataAccess.QuerySingle<int, Order>(sql, order);
 
             sql = @"INSERT INTO [dbo].[OrderLineItem]
@@ -112,6 +111,7 @@ namespace eShop.DataStore.SQL.Dapper
         public IEnumerable<Order> SearchOrders(string customerName, DateTime startDate, DateTime endDate)
         {
             var sql = string.Empty;
+            endDate = endDate.AddDays(1);
             if (string.IsNullOrWhiteSpace(customerName))
             {
                 sql = @"SELECT * FROM [ORDER] WHERE [DatePlaced] >= @StartDate AND [DatePlaced] <= @EndDate";
@@ -128,7 +128,6 @@ namespace eShop.DataStore.SQL.Dapper
         {
             var sql = @"UPDATE [Order]
                           SET [DatePlaced] = @DatePlaced
-                          ,[DateProcessing] = @DateProcessing
                           ,[DateProcessed] = @DateProcessed
                           ,[CustomerName] = @CustomerName
                           ,[CustomerAddress] = @CustomerAddress
@@ -137,6 +136,7 @@ namespace eShop.DataStore.SQL.Dapper
                           ,[CustomerCountry] = @CustomerCountry
                           ,[AdminUser] = @AdminUser
                           ,[UniqueId] = @UniqueId
+                          ,[UserId] = @UserId
                       WHERE OrderId = @OrderId";
 
             dataAccess.ExecuteCommand(sql, order);

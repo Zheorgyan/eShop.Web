@@ -1,0 +1,73 @@
+﻿@page "/authors"
+@attribute [Authorize(Policy = "AdminOnly")]
+
+@inject NavigationManager NavigationManager
+@inject IViewAuthorsUseCase ViewAuthorsUseCase
+@inject IDeleteAuthorUseCase DeleteAuthorUseCase
+
+<h3>Управление авторами</h3>
+<br />
+@if (authors != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчетсво</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var author in authors)
+            {
+                <tr>
+                    <td>@author.FirstName</td>
+                    <td>@author.LastName</td>
+                    <td>@author.SecondName</td>
+                    <td>
+                        <button type="button" @onclick="@(() => EditAuthor(author))" class="btn btn-link">Редактировать</button>
+                      <button type="button" @onclick="@(() => DeleteAuthor(author.AuthorId))" class="btn btn-link">Удалить</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<button type="button" @onclick="OnClickAddAuthor" class="btn btn-primary">Добавить категорию</button>
+
+
+
+@code {
+
+    private List<Author> authors;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadAuthors();
+    }
+
+    private void OnClickAddAuthor()
+    {
+        NavigationManager.NavigateTo("/addauthor");
+    }
+
+    private void EditAuthor(Author author)
+    {
+        NavigationManager.NavigateTo($"/editauthor/{author.AuthorId}");
+    }
+
+    private void DeleteAuthor(int authorId)
+    {
+        DeleteAuthorUseCase.Execute(authorId);
+        LoadAuthors();
+    }
+
+    private void LoadAuthors()
+    {
+        authors = ViewAuthorsUseCase.Execute()?.ToList();
+    }
+}

@@ -1,13 +1,12 @@
 ﻿@page "/product/{id:int}"
 
-
-
 @inject NavigationManager NavigationManager
 @inject IViewProductUseCase ViewProductUseCase
 @inject IAddProductToCartUseCase  addProductToCartUseCase
 @inject eShop.UseCases.DeleteProductUseCase.IDeleteProductUseCase DeleteProductUseCase
 @inject IGetCategoryByIdUseCase GetCategoryById
 @inject IGetBrandByIdUseCase GetBrandById
+@inject IGetAuthorByIdUseCase GetAuthorById
 
 <div class="card" style="width: 28rem;">
     <div class="card-body">
@@ -15,7 +14,7 @@
         <h5 class="card-title">@category.Name</h5>
         <h5 class="card-title">@product.Name</h5>
         <h6 class="card-subtitle mb-2 text-muted">@brand.Name</h6>
-        <h6 class="card-subtitle mb-2 text-muted">@product.Author</h6>
+        <h6 class="card-subtitle mb-2 text-muted">@author.FirstName @author.LastName</h6>
         <hr />
         <p>
             Цена: <label style="color:darkred">@product.Price.ToString("c")</label>
@@ -37,6 +36,8 @@
     private Product product;
     private Category category;
     private Brand brand;
+    private Author author;
+
     [Parameter]
     public int Id { get; set; }
 
@@ -46,7 +47,8 @@
 
         if (Id > 0) product = ViewProductUseCase.Execute(Id);
         category = GetCategoryById.Execute(product.CategoryId);
-        brand = GetBrandById.Execute(brand.BrandId);
+        brand = GetBrandById.Execute(product.BrandId);
+        author = GetAuthorById.Execute(product.AuthorId);
     }
 
     private void AddToCart()

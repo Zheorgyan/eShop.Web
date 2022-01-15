@@ -34,12 +34,10 @@ namespace eShop.DataStore.SQL.Dapper
                 brand.BrandId = 1;
             }
             var sql = @"INSERT INTO [dbo].[Brand]
-                                ([BrandId]
-                                ,[Name]
+                                ([Name]
                                 ,[Description])
                             VALUES
-                                (@BrandId
-                                ,@Name
+                                (@Name
                                 ,@Description)";
 
             dataAccess.ExecuteCommand(sql, brand);
@@ -70,12 +68,11 @@ namespace eShop.DataStore.SQL.Dapper
             if (brn == null) return;
 
             var sql = @"UPDATE [Brand]
-                        SET [BrandId] = @BrandId
-                            ,[Name] = @Name
-                            ,[Description] = @Description
+                        SET [Name] = @Name
+                           ,[Description] = @Description
                         WHERE BrandId = @BrandId";
 
-            dataAccess.ExecuteCommand(sql, brn);
+            dataAccess.ExecuteCommand(sql, brand);
         }
     }
 }

@@ -33,25 +33,54 @@ namespace eShop.DataStore.SQL.Dapper
                 product.ProductId = 1;
             }
             var sql = @"INSERT INTO [dbo].[Product]
-                                ([ProductId]
-                                ,[BrandId]
+                                ([BrandId]
                                 ,[CategoryId]
-                                ,[Author]
+                                ,[AuthorId]
                                 ,[Name]
                                 ,[Price]
                                 ,[ImageLink]
                                 ,[Description])
+                        OUTPUT INSERTED.ProductId
                             VALUES
-                                (@ProductId
-                                ,@BrandId
+                                (@BrandId
                                 ,@CategoryId
-                                ,@Author
+                                ,@AuthorId
                                 ,@Name
                                 ,@Price
                                 ,@ImageLink
                                 ,@Description)";
 
-            dataAccess.ExecuteCommand(sql, product);
+            var productId = dataAccess.QuerySingle<int, Product>(sql, product);
+
+            AuthorForProduct authorForProduct = new AuthorForProduct()
+            {
+                ProductId = productId,
+                AuthorId = product.AuthorId
+            };
+
+            sql = @"INSERT INTO [dbo].[AuthorForProduct]
+                                ([AuthorId]
+                                ,[ProductId])
+                        VALUES
+                                (@AuthorId
+                                ,@ProductId)";
+
+            dataAccess.ExecuteCommand(sql, authorForProduct);
+
+            BrandForProduct brandForProduct = new BrandForProduct()
+            {
+                ProductId = productId,
+                BrandId = product.BrandId
+            };
+
+            sql = @"INSERT INTO [dbo].[BrandForProduct]
+                                ([BrandId]
+                                ,[ProductId])
+                        VALUES
+                                (@BrandId
+                                ,@ProductId)";
+
+            dataAccess.ExecuteCommand(sql, brandForProduct);
         }
 
         public void DeleteProduct(int productId)
@@ -59,7 +88,7 @@ namespace eShop.DataStore.SQL.Dapper
             var prod = GetProduct(productId);
             if (prod == null) return;
 
-            var sql = $@"DELETE FROM Product WHERE ProductId = {productId}";
+            var sql = $@"DELETE FROM Product WHERE ProductId = {prod.ProductId}";
             dataAccess.ExecuteCommand(sql, productId);
         }
 
@@ -73,7 +102,16 @@ namespace eShop.DataStore.SQL.Dapper
             if (string.IsNullOrWhiteSpace(filter))
                 products = dataAccess.Query<Product, dynamic>("SELECT * FROM Product", new { });
             else
-                products = dataAccess.Query<Product, dynamic>("SELECT * FROM Product WHERE Name like '%' + @Filter + '%'", new { Filter = filter });
+            {
+                var sql = @"SELECT p.ProductId, p.Name, p.Price, p.Description, p.ImageLink FROM Product p 
+                            join Author a on a.AuthorId = p.AuthorId
+                            join Brand b on b.BrandId = p.BrandId
+                            join Category c on c.CategoryId = p.CategoryId
+                            WHERE p.Name like '%' + @Filter + '%' OR a.FirstName like '%' + @Filter + '%' OR a.LastName like '%' + @Filter + '%'
+                            OR b.Name like '%' + @Filter + '%' OR c.Name like '%' + @Filter + '%'";
+                
+                products = dataAccess.Query<Product, dynamic>(sql, new { Filter = filter });
+            }    
 
             return products.AsEnumerable();
         }
@@ -84,15 +122,26 @@ namespace eShop.DataStore.SQL.Dapper
             if (prod == null) return;
 
             var sql = @"UPDATE [Product]
-                          SET [ProductId] = @ProductId
-                          ,[BrandId] = @BrandId
+                          SET [BrandId] = @BrandId
                           ,[CategoryId] = @CategoryId
-                          ,[Author] = @Author
+                          ,[AuthorId] = @AuthorId
                           ,[Name] = @Name
                           ,[Price] = @Price
                           ,[ImageLink] = @ImageLink
                           ,[Description] = @Description
                       WHERE ProductId = @ProductId";
+
+            dataAccess.ExecuteCommand(sql, product);
+
+            sql = @"UPDATE [AuthorForProduct]
+                        SET [AuthorId] = @AuthorId
+                        ,[ProductId] = @ProductId";
+
+            dataAccess.ExecuteCommand(sql, product);
+
+            sql = @"UPDATE [BrandForProduct]
+                        SET [BrandId] = @BrandId
+                        ,[ProductId] = @ProductId";
 
             dataAccess.ExecuteCommand(sql, product);
         }

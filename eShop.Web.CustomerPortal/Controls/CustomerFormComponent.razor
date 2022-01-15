@@ -17,9 +17,8 @@
 
         <div class="form-group">
             <label for="city">Город</label>
-            <InputText id="city" @bind-Value="customer.CustomerCity" class="form-control"></InputText>
+            <InputText id="city" @bind-Value="customer.CustomerCity" class="form-control" ></InputText>
         </div>
-
         <div class="form-group">
             <label for="province">Область</label>
             <InputText id="province" @bind-Value="customer.CustomerStateProvince" class="form-control"></InputText>
@@ -39,6 +38,8 @@
 
     private CustomerViewModel customer;
 
+    private KladrClient kladrClient = new KladrClient("some_token", "some_key");
+
     [Parameter]
     public EventCallback<CustomerViewModel> OnCustomerInfoSubmitted { get; set; }
 
@@ -47,6 +48,34 @@
         base.OnInitialized();
 
         customer = new CustomerViewModel();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    private void GetCity()
+    {
+        if(customer.CustomerCity != "")
+        {
+            kladrClient.FindAddress(new Dictionary<string, string>
+            {
+                {"query", customer.CustomerCity},
+                {"contentType", "city"},
+                {"withParent", "1"},
+                {"limit", "2"}
+            }, fetchedAddress);
+        }        
+    }
+
+    public void fetchedAddress(KladrResponse response)
+    {
+        if(response!=null)
+        {
+            if (response.result != null && response.InfoMessage.Equals("OK"))
+                customer.CustomerCity = response.result.Length.ToString();
+        }
     }
 
     private void HandleValidSubmit()

@@ -1,8 +1,8 @@
 ﻿@page "/addcategory" 
-@*@attribute [Authorize(Policy ="AdminOnly")]*@
+@attribute [Authorize(Policy ="AdminOnly")]
 
 @inject NavigationManager NavigationManager
-@inject IAddCategoryUseCase AddCategoryUseCase 
+@inject IAddCategoryUseCase AddCategoryUseCase
 
 <h3>Добавить категорию</h3>
 <br />
@@ -36,7 +36,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
         category = new Category();
     }
 

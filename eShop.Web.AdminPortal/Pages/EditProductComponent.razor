@@ -1,12 +1,13 @@
 ﻿@page "/editproduct/{productId}"
 
-@*@attribute [Authorize(Policy ="AdminOnly")]*@
+@attribute [Authorize(Policy ="AdminOnly")]
 
 @inject IEditProductUseCase EditProductUseCase
 @inject NavigationManager NavigationManager
 @inject IViewProductUseCase ViewProductUsecase
 @inject IViewCategoriesUseCase ViewCategoriesUseCase
 @inject IViewBrandsUseCase ViewBrandsUseCase
+@inject IViewAuthorsUseCase ViewAuthorsUseCase
 
 <h3>Изменить продукт</h3>
 <br />
@@ -51,7 +52,13 @@
 
         <div class="form-group">
             <label for="author">Автор</label>
-            <InputText id="author" @bind-Value="product.Author" class="form-control"></InputText>
+            <select id="author" @bind="product.AuthorId" class="form-control">
+                <option selected></option>
+                @foreach (var author in authors)
+                {
+                    <option value="@author.AuthorId">@author.FirstName @author.LastName</option>
+                }
+            </select>
         </div>
         <div class="form-group">
             <label for="descr">Описание</label>
@@ -68,14 +75,17 @@
     public string ProductId { get; set; }
 
     private Product product;
+    private AuthorForProduct authorForProduct;
     private IEnumerable<Category> categories;
     private IEnumerable<Brand> brands;
+    private IEnumerable<Author> authors;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         categories = ViewCategoriesUseCase.Execute();
         brands = ViewBrandsUseCase.Execute();
+        authors = ViewAuthorsUseCase.Execute();
     }
 
     protected override void OnParametersSet()

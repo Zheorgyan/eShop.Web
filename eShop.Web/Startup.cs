@@ -4,6 +4,7 @@ using eShop.DataStore.SQL.Dapper;
 //using eShop.DataStore.SQL.EF;
 using eShop.StateStore.LocalStorage;
 using eShop.UseCases.AddProductUseCase;
+using eShop.UseCases.AuthorScreen;
 using eShop.UseCases.BrandsScreen;
 using eShop.UseCases.CategoriesScreen;
 using eShop.UseCases.EditProductScreen;
@@ -21,7 +22,8 @@ using eShop.UseCases.ViewProductScreen;
 using eShop.Web.Common.JsInterOp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-//using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -47,8 +49,9 @@ namespace eShop.Web
             //services.AddAuthentication("eShop.CookieAuth").AddCookie("eShop.CookieAuth", config =>
             //{
             //    config.Cookie.Name = "eShop.CookieAuth";
-            //    config.LoginPath = "/authenticate";
+            //    config.LoginPath = "/login";
             //});
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthorization(options =>
             {
@@ -61,32 +64,23 @@ namespace eShop.Web
 
             services.AddTransient<JsNavigator>();
 
-            //HardCoded
-            services.AddSingleton<IProductRepository, ProductRepository>();
-            services.AddSingleton<IOrderRepository, OrderRepository>();
-
             //EF
             //services.AddDbContext<eShopContext>(options =>
             //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             //});
 
             //Dapper
-            //services.AddTransient<IDataAccess>(sp => new DataAccess(Configuration.GetConnectionString("Default")));
-
-            services.AddSingleton<DapperContext>();
-            services.AddSingleton<DapperDb>();
+            services.AddTransient<IDataAccess>(sp => new DataAccess(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<IBrandRepository, IBrandRepository>();
-
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<IAuthorRepository, AuthorRepository>();
 
             services.AddScoped<IShoppingCartStateStore, ShoppingCartStateStore>();
-
             services.AddTransient<IOrderService, OrderService>();
-
             services.AddTransient<IShoppingCart, ShoppingCart.LocalStorage.ShoppingCart>();
 
             services.AddTransient<ISearchProductUseCase, SearchProductUseCase>();
@@ -94,7 +88,6 @@ namespace eShop.Web
             services.AddTransient<IAddProductUseCase, AddProductUseCase>();
             services.AddTransient<IEditProductUseCase, EditProductUseCase>();
             services.AddTransient<UseCases.DeleteProductUseCase.IDeleteProductUseCase, UseCases.DeleteProductUseCase.DeleteProductUseCase>();
-
 
             services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>();
             services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
@@ -121,6 +114,12 @@ namespace eShop.Web
             services.AddTransient<IDeleteBrandUseCase, DeleteBrandUseCase>();
             services.AddTransient<IGetBrandByIdUseCase, GetBrandByIdUseCase>();
             services.AddTransient<IEditBrandUseCase, EditBrandUseCase>();
+
+            services.AddTransient<IViewAuthorsUseCase, ViewAuthorsUseCase>();
+            services.AddTransient<IAddAuthorUseCase, AddAuthorUseCase>();
+            services.AddTransient<IDeleteAuthorUseCase, DeleteAuthorUseCase>();
+            services.AddTransient<IGetAuthorByIdUseCase, GetAuthorByIdUseCase>();
+            services.AddTransient<IEditAuthorUseCase, EditAuthorUseCase>();
 
         }
 

@@ -17,13 +17,13 @@ namespace eShop.DataStore.SQL.EF
 
         public int CreateOrder(Order order)
         {
+            //order.UserId = accDb.Users.FirstOrDefault(x=> x.UserName).Id;
             db.Order.Add(order);
             db.SaveChanges();
-
             order.LineItems.ForEach(x => db.OrderLineItem.Add(x));
             db.SaveChanges();
 
-            int.TryParse(db.Order.Where(x => x.OrderId == order.OrderId).Max(x => x.OrderId == order.OrderId).ToString(), out int orderId);
+            int.TryParse(db.Order.Where(x => x.OrderId == order.OrderId).Select(x => x.OrderId).Max().ToString(), out int orderId);
             return orderId;
         }
 
@@ -37,12 +37,13 @@ namespace eShop.DataStore.SQL.EF
 
         public Order GetOrder(int id)
         {
-            return db.Order.Where(x => x.OrderId == id) as Order;
+            return db.Order.FirstOrDefault(x => x.OrderId == id);
         }
 
         public Order GetOrderByUniqueId(string uniqueId)
         {
-            return db.Order.Where(x => x.UniqueId == uniqueId) as Order;
+            var order = db.Order.FirstOrDefault(x => x.UniqueId == uniqueId);
+            return  order;
         }
 
         public IEnumerable<Order> GetOrders()

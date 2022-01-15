@@ -34,12 +34,10 @@ namespace eShop.DataStore.SQL.Dapper
                 category.CategoryId = 1;
             }
             var sql = @"INSERT INTO [dbo].[Category]
-                                ([CategoryId]
-                                ,[Name]
+                                ([Name]
                                 ,[Description])
                             VALUES
-                                (@CategoryId
-                                ,@Name
+                                (@Name
                                 ,@Description)";
 
             dataAccess.ExecuteCommand(sql, category);
@@ -69,8 +67,7 @@ namespace eShop.DataStore.SQL.Dapper
             if (prod == null) return;
 
             var sql = @"UPDATE [Category]
-                          SET [CategoryId] = @CategoryId
-                          ,[Name] = @Name
+                          SET [Name] = @Name
                           ,[Description] = @Description
                       WHERE CategoryId = @CategoryId";
 

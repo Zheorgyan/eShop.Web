@@ -59,7 +59,5 @@
             var order = await updateQuantityUseCase.Execute(LineItem.ProductId, qty);
             await OnUpdateQuantity.InvokeAsync(order);
         }
-
     }
-
 }

@@ -1,5 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 
+@inject IGetBrandByIdUseCase GetBrandByIdUseCase
+@inject IGetAuthorByIdUseCase GetAuthorByIdUseCase
+
 @if (this.Product != null)
 {
     <tr>
@@ -8,8 +11,8 @@
                 @Product.Name
             </NavLink>
         </td>
-        <td>@Product.Brand</td>
-        <td>@Product.Author</td>
+        <td>@brand.Name</td>
+        <td>@author.FirstName @author.LastName</td>
         <td>@Product.Price.ToString("c")</td>
     </tr>
 }
@@ -17,5 +20,16 @@
 @code {
     [Parameter]
     public Product Product { get; set; }
+
+    private Brand brand;
+    private Author author;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        brand = GetBrandByIdUseCase.Execute(Product.BrandId);
+        author = GetAuthorByIdUseCase.Execute(Product.AuthorId);
+    }
 
 }

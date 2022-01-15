@@ -1,9 +1,10 @@
 ﻿@page "/placeorder"
 
-
 @inject NavigationManager NavigationManager
 @inject IViewShoppingCartUseCase viewShoppingCartUseCase
 @inject IPlaceOrderUseCase placeOrderUseCase 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<IdentityUser> UserManager;
 
 <MessageComponent @ref="msgComponent"></MessageComponent>
 
@@ -30,7 +31,6 @@
     private Order order;
 
     private MessageComponent msgComponent;
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -42,9 +42,16 @@
 
     private async void HandleCustomerInfoSubmitted(CustomerViewModel customer)
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var currentUser = await UserManager.GetUserAsync(user);
+            order.UserId = currentUser.Id;
+        }
         var mapper = new AutoMapper.MapperConfiguration(cfg => cfg.CreateMap<CustomerViewModel, Order>()).CreateMapper();
         mapper.Map<CustomerViewModel, Order>(customer, order);
-
         var orderUniqueId = await placeOrderUseCase.Execute(order);
         if (string.IsNullOrWhiteSpace(orderUniqueId))
         {

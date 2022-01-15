@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace eShop.CoreBusiness.Models
@@ -13,7 +14,6 @@ namespace eShop.CoreBusiness.Models
 
         public int? OrderId { get; set; }
         public DateTime? DatePlaced { get; set; }
-        public DateTime? DateProcessing { get; set; }
         public DateTime? DateProcessed { get; set; }
         public string CustomerName { get; set; }
         public string CustomerAddress { get; set; }
@@ -21,9 +21,13 @@ namespace eShop.CoreBusiness.Models
         public string CustomerStateProvince { get; set; }
         public string CustomerCountry { get; set; }
         public string AdminUser { get; set; }
-        public List<OrderLineItem> LineItems { get; set; }
         public string UniqueId { get; set; }
+        public string UserId { get; set; }
 
+        [NotMapped]
+        public List<OrderLineItem> LineItems { get; set; }
+
+        public User User { get; set; }
         public void AddProduct(int productId, int qty, double price)
         {
             var item = LineItems.FirstOrDefault(x => x.ProductId == productId);

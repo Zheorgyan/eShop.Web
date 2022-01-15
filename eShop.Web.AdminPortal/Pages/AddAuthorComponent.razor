@@ -1,0 +1,56 @@
+﻿@page "/addauthor" 
+@attribute [Authorize(Policy ="AdminOnly")]
+
+@inject NavigationManager NavigationManager
+@inject IAddAuthorUseCase AddAuthorUseCase 
+
+<h3>Добавить автора</h3>
+<br />
+@if (author != null)
+{
+    <EditForm Model="author" OnValidSubmit="OnValidSumit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="name">Наименование</label>
+            <InputText id="name" @bind-Value="author.FirstName" class="form-control"></InputText>
+        </div>
+                <div class="form-group">
+            <label for="secondName">Фамилия</label>
+            <InputText id="secondName" @bind-Value="author.SecondName" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Фамилия</label>
+            <InputText id="lastName" @bind-Value="author.LastName" class="form-control"></InputText>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Отменить</button>
+    </EditForm>
+
+}
+
+
+@code {
+
+    private Author author;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        author = new Author();
+    }
+
+    private void OnValidSumit()
+    {
+        AddAuthorUseCase.Execute(author);
+        NavigationManager.NavigateTo("/authors");
+    }
+
+    private void OnCancel()
+    {
+        NavigationManager.NavigateTo("/authors");
+    }
+
+}

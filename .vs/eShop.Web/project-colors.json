@@ -65,7 +65,17 @@
       "ProjectGuid": "e66e900b-0272-4cb2-9a83-ca4e89c6f823",
       "DisplayName": "eShop.DataStore.SQL.EF",
       "ColorIndex": 11
+    },
+    "ae29c5ad-8741-437a-9d78-972b2a4194da": {
+      "ProjectGuid": "ae29c5ad-8741-437a-9d78-972b2a4194da",
+      "DisplayName": "KladrApiClient",
+      "ColorIndex": 12
+    },
+    "77c59547-5d57-4985-b1ed-8087431ab1c8": {
+      "ProjectGuid": "77c59547-5d57-4985-b1ed-8087431ab1c8",
+      "DisplayName": "KladrAPIClientExample",
+      "ColorIndex": 13
     }
   },
-  "NextColorIndex": 12
+  "NextColorIndex": 14
 }

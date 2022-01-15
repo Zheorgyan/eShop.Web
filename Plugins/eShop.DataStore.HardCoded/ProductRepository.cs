@@ -19,7 +19,7 @@ namespace eShop.DataStore.HardCoded
                     ProductId = 495,
                     CategoryId = 1,
                     BrandId = 1,
-                    Author = "Рихтер Джеффри",
+                    AuthorId = 1,
                     Name = "CLR via C#. Программирование на платформе Microsoft .NET Framework 4.5 на языке C#. 4-е изд.", 
                     Price = 1825,
                     ImageLink = "https://cdn1.ozone.ru/s3/multimedia-i/6170125470.jpg",
@@ -29,7 +29,7 @@ namespace eShop.DataStore.HardCoded
                     ProductId = 488,
                     CategoryId = 1,
                     BrandId = 2,
-                    Author = "Васильев Алексей Николаевич",
+                    AuthorId = 2,
                     Name = "Программирование на C# для начинающих. Особенности языка",
                     Price = 924,
                     ImageLink = "https://cdn1.ozone.ru/multimedia/1026291302.jpg",
@@ -40,7 +40,7 @@ namespace eShop.DataStore.HardCoded
                     ProductId = 477,
                     CategoryId = 1,
                     BrandId = 3,
-                    Author = "Джон Скит",
+                    AuthorId = 3,
                     Name = "C# для профессионалов. Тонкости программирования",
                     Price = 2484,
                     ImageLink = "https://cdn1.ozone.ru/multimedia/1026732931.jpg",
@@ -50,7 +50,7 @@ namespace eShop.DataStore.HardCoded
                     ProductId = 439,
                     CategoryId = 1,
                     BrandId = 4,
-                    Author = "Фленов Михаил Е.",
+                    AuthorId = 4,
                     Name = "Библия C#. 5-е изд., перераб. и доп",
                     Price = 770,
                     ImageLink = "https://cdn1.ozone.ru/s3/multimedia-z/6129084299.jpg",
@@ -105,7 +105,7 @@ namespace eShop.DataStore.HardCoded
                 productToUpdate.ImageLink = product.ImageLink;
                 productToUpdate.Price = product.Price;
                 productToUpdate.Description = product.Description;
-                productToUpdate.Author = product.Author;
+                productToUpdate.AuthorId = product.AuthorId;
                 productToUpdate.BrandId = product.BrandId;
                 productToUpdate.CategoryId = product.CategoryId;
             }

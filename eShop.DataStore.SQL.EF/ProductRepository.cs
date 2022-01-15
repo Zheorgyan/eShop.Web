@@ -17,7 +17,8 @@ namespace eShop.DataStore.SQL.EF
 
         public void AddProduct(Product product)
         {
-            if (db.Product.Any(x => x.Name.Equals(product.Name, StringComparison.OrdinalIgnoreCase)))
+            var prod = db.Product.FirstOrDefault(x => x.ProductId == product.ProductId);
+            if (prod != null)
             {
                 return;
             }
@@ -52,7 +53,7 @@ namespace eShop.DataStore.SQL.EF
         public IEnumerable<Product> GetProducts(string filter = null)
         {
             if (string.IsNullOrWhiteSpace(filter)) return db.Product;
-            else return db.Product.Where(x => x.Name == filter || x.Author == filter || x.Brand == filter);
+            else return db.Product.Where(x => x.Name == filter);
 
         }
 

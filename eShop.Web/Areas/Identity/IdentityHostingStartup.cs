@@ -1,5 +1,5 @@
 ﻿using System;
-using eShop.Web.Data;
+using eShop.Web.Areas.Identity.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -16,8 +16,7 @@ namespace eShop.Web.Areas.Identity
         {
             builder.ConfigureServices((context, services) => {
                 services.AddDbContext<AccountContext>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("AccountContextConnection")));
+                    options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
 
                 services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<AccountContext>();

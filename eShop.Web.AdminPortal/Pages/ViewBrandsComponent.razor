@@ -1,5 +1,5 @@
 ﻿@page "/brands"
-@*@attribute [Authorize(Policy = "AdminOnly")]*@
+@attribute [Authorize(Policy = "AdminOnly")]
 
 @inject NavigationManager NavigationManager
 @inject IViewBrandsUseCase ViewBrandsUseCase
@@ -7,7 +7,7 @@
 
 <h3>Управление издательствами</h3>
 <br />
-@if (categories != null)
+@if (brands != null)
 {
 
     <table class="table">
@@ -34,7 +34,7 @@
     </table>
 }
 <br />
-<button type="button" @onclick="OnClickAddCategory" class="btn btn-primary">Добавить категорию</button>
+<button type="button" @onclick="OnClickAddBrand" class="btn btn-primary">Добавить категорию</button>
 
 
 
@@ -53,14 +53,14 @@
         NavigationManager.NavigateTo("/addbrand");
     }
 
-    private void EditCategory(Brand brand)
+    private void EditBrand(Brand brand)
     {
         NavigationManager.NavigateTo($"/editbrand/{brand.BrandId}");
     }
 
-    private void DeleteCategory(int brandId)
+    private void DeleteBrand(int brandId)
     {
-        DeleteBrandUseCase.Delete(brandId);
+        DeleteBrandUseCase.Execute(brandId);
         LoadBrands();
     }
 

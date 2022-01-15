@@ -46,7 +46,7 @@ namespace eShop.CoreBusiness.Services
             if (!order.OrderId.HasValue) return false;
             if (order.LineItems == null || order.LineItems.Count <= 0) return false;
             if (!order.DatePlaced.HasValue) return false;
-            if (order.DateProcessed.HasValue || order.DateProcessing.HasValue) return false;
+            if (order.DateProcessed.HasValue) return false;
             if (string.IsNullOrWhiteSpace(order.UniqueId)) return false;
             foreach (var item in order.LineItems)
             {

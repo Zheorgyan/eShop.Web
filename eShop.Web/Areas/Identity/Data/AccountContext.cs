@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace eShop.Web.Data
+namespace eShop.Web.Areas.Identity.Data
 {
     public class AccountContext : IdentityDbContext<IdentityUser>
     {

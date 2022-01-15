@@ -20,6 +20,7 @@
     <ProjectReference Include="..\eShop.UseCases\eShop.UseCases.csproj" />
     <ProjectReference Include="..\eShop.Web.AdminPortal\eShop.Web.AdminPortal.csproj" />
     <ProjectReference Include="..\eShop.Web.Common\eShop.Web.Common.csproj" />
+    <ProjectReference Include="..\Plugins\garakh-kladrapi-dotnet-253008e\Sources\KladrApiClient\KladrApiClient\KladrApiClient.csproj" />
   </ItemGroup>
 
 </Project>

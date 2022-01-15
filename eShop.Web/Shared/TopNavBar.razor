@@ -3,9 +3,6 @@
         <li class="nav-item">
             <a class="navbar-brand" href="">eShop</a>
         </li>
-                        <li class="nav-item">
-                    <a class="nav-link" href="categories">Управление категориями</a>
-                </li>
         <AuthorizeView Policy="AdminOnly">
             <Authorized>
                 <li class="nav-item">
@@ -15,13 +12,19 @@
                     <a class="nav-link" href="processedorders">Обработанные заказы</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="addproduct">Добавить продукт</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="transactions">Отчет о заказах</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="addproduct">Добавить продукт</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="categories">Управление категориями</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="authors">Управление авторами</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="brands">Управление издательствами</a>
                 </li>
             </Authorized>
         </AuthorizeView>

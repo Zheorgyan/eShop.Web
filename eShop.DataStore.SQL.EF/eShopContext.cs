@@ -2,11 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
+
 namespace eShop.DataStore.SQL.EF
 {
     public class eShopContext : DbContext
     {
-        public eShopContext(DbContextOptions options) : base(options) { }
+        public eShopContext(DbContextOptions options) : base(options) 
+        {
+        }
 
         public DbSet<Product> Product { get; set; }
 
@@ -14,14 +17,80 @@ namespace eShop.DataStore.SQL.EF
 
         public DbSet<OrderLineItem> OrderLineItem { get; set; }
 
+        public DbSet<Brand> Brand { get; set; }
+
+        public DbSet<Author> Author { get; set; }
+
+        public DbSet<Category> Category { get; set; }
+
+        public DbSet<AuthorForProduct> AuthorForProduct { get; set; }
+
+        public DbSet<BrandForProduct> BrandForProduct { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Product>()
+                        .HasMany(c => c.AuthorForProducts)
+                        .WithOne(p => p.Product)
+                        .HasForeignKey(p => p.ProductId);
+
+            modelBuilder.Entity<Product>()
+                        .HasMany(c => c.BrandForProducts)
+                        .WithOne(p => p.Product)
+                        .HasForeignKey(p => p.ProductId);
+
+            modelBuilder.Entity<Category>()
+                        .HasMany(c => c.Products)
+                        .WithOne(p => p.Category)
+                        .HasForeignKey(p => p.CategoryId);
+
+            modelBuilder.Entity<Brand>()
+                        .HasMany(c => c.BrandForProducts)
+                        .WithOne(p => p.Brand)
+                        .HasForeignKey(p => p.BrandId);
+
+            modelBuilder.Entity<Author>()
+                        .HasMany(c => c.AuthorForProducts)
+                        .WithOne(p => p.Author)
+                        .HasForeignKey(p => p.AuthorId);
+
+            modelBuilder.Entity<AuthorForProduct>().HasData(
+                new AuthorForProduct { AuthorForProductId = 1, AuthorId = 1, ProductId = 1},
+                new AuthorForProduct { AuthorForProductId = 2, AuthorId = 2, ProductId = 2},
+                new AuthorForProduct { AuthorForProductId = 3, AuthorId = 3, ProductId = 3},
+                new AuthorForProduct { AuthorForProductId = 4, AuthorId = 4, ProductId = 4});
+
+            modelBuilder.Entity<BrandForProduct>().HasData(
+                new BrandForProduct { BrandForProductId = 1, BrandId = 1, ProductId = 1 },
+                new BrandForProduct { BrandForProductId = 2, BrandId = 2, ProductId = 2 },
+                new BrandForProduct { BrandForProductId = 3, BrandId = 3, ProductId = 3 },
+                new BrandForProduct { BrandForProductId = 4, BrandId = 4, ProductId = 4 });
+
+            modelBuilder.Entity<Author>().HasData(
+                new Author { AuthorId = 1, FirstName = "Джеффри", LastName = "Рихтер" },
+                new Author { AuthorId = 2, FirstName = "Алексей", LastName = "Васильев", SecondName = "Николаевич" },
+                new Author { AuthorId = 3, FirstName = "Джон", LastName = "Скит" },
+                new Author { AuthorId = 4, FirstName = "Михаил", LastName = "Фленов", SecondName = "Евгеньевич" });
+
+            modelBuilder.Entity<Brand>().HasData(
+                new Brand { BrandId = 1, Name = "БХВ-Петербург", Description = "тест" },
+                new Brand { BrandId = 2, Name = "Вильямс", Description = "тест" },
+                new Brand { BrandId = 3, Name = "Бомбора", Description = "тест" },
+                new Brand { BrandId = 4, Name = "Прогресс книга", Description = "тест" });
+
+
+            modelBuilder.Entity<Category>().HasData(
+                new Category { CategoryId = 1, Name = "Нон-фикшен", Description = "Техническая литература для изучения программирования и не только" },
+                new Category { CategoryId = 2, Name = "Художественная литература", Description = "Вид искусства, использующий в качестве единственного материала слова и конструкции естественного языка." });
+
             modelBuilder.Entity<Product>().HasData(
                 new Product
                 {
-                    ProductId = 495,
-                    Brand = "Прогресс книга",
-                    Author = "Рихтер Джеффри",
+                    ProductId = 1,
+                    BrandId = 1,
+                    CategoryId = 1,
+                    AuthorId = 1,
                     Name = "CLR via C#. Программирование на платформе Microsoft .NET Framework 4.5 на языке C#. 4-е изд.",
                     Price = 1825,
                     ImageLink = "https://cdn1.ozone.ru/s3/multimedia-i/6170125470.jpg",
@@ -29,9 +98,10 @@ namespace eShop.DataStore.SQL.EF
                 },
                 new Product
                 {
-                    ProductId = 488,
-                    Brand = "Бомбора",
-                    Author = "Васильев Алексей Николаевич",
+                    ProductId = 2,
+                    BrandId = 2,
+                    CategoryId = 1,
+                    AuthorId = 2,
                     Name = "Программирование на C# для начинающих. Особенности языка",
                     Price = 924,
                     ImageLink = "https://cdn1.ozone.ru/multimedia/1026291302.jpg",
@@ -39,9 +109,10 @@ namespace eShop.DataStore.SQL.EF
                 },
                 new Product
                 {
-                    ProductId = 477,
-                    Brand = "Вильямс",
-                    Author = "Джон Скит",
+                    ProductId = 3,
+                    BrandId = 3,
+                    CategoryId = 1,
+                    AuthorId = 3,
                     Name = "C# для профессионалов. Тонкости программирования",
                     Price = 2484,
                     ImageLink = "https://cdn1.ozone.ru/multimedia/1026732931.jpg",
@@ -49,9 +120,10 @@ namespace eShop.DataStore.SQL.EF
                 },
                 new Product
                 {
-                    ProductId = 439,
-                    Brand = "БХВ-Петербург",
-                    Author = "Фленов Михаил Е.",
+                    ProductId = 4,
+                    BrandId = 4,
+                    CategoryId = 1,
+                    AuthorId = 4,
                     Name = "Библия C#. 5-е изд., перераб. и доп",
                     Price = 770,
                     ImageLink = "https://cdn1.ozone.ru/s3/multimedia-z/6129084299.jpg",

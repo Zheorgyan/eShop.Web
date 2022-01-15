@@ -7,7 +7,7 @@ using System.Text;
 
 namespace eShop.DataStore.HardCoded
 {
-    internal class BrandRepository : IBrandRepository
+    public class BrandRepository : IBrandRepository
     {
         private List<Brand> brands;
 

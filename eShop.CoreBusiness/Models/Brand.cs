@@ -11,5 +11,6 @@ namespace eShop.CoreBusiness.Models
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        public List<BrandForProduct> BrandForProducts { get; set; }
     }
 }

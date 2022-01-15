@@ -9,16 +9,17 @@ namespace SeedData
     {
         static void Main(string[] args)
         {
-            var da = new DataAccess("Data Source=(local);Initial Catalog=eShop;Integrated Security=True");
-            var sql = "INSERT INTO Product VALUES(@ProductId, @Brand, @Author, @Name, @Price, @ImageLink, @Description)";
+            var da = new DataAccess("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=eShop;Integrated Security=True");
+            var sql = "INSERT INTO Product VALUES(@ProductId, @BrandId, @CategoryId, @Author, @Name, @Price, @ImageLink, @Description)";
 
             var products = new List<Product>
             {
                 new Product
                 {
                     ProductId = 495,
-                    Brand = "Прогресс книга",
-                    Author = "Рихтер Джеффри",
+                    BrandId = 1,
+                    CategoryId = 1,
+                    AuthorId = 1,
                     Name = "CLR via C#. Программирование на платформе Microsoft .NET Framework 4.5 на языке C#. 4-е изд.",
                     Price = 1825,
                     ImageLink = "https://cdn1.ozone.ru/s3/multimedia-i/6170125470.jpg",
@@ -26,8 +27,9 @@ namespace SeedData
                 new Product
                 {
                     ProductId = 488,
-                    Brand = "Бомбора",
-                    Author = "Васильев Алексей Николаевич",
+                    BrandId = 1,
+                    CategoryId = 1,
+                    AuthorId = 2,
                     Name = "Программирование на C# для начинающих. Особенности языка",
                     Price = 924,
                     ImageLink = "https://cdn1.ozone.ru/multimedia/1026291302.jpg",
@@ -36,8 +38,9 @@ namespace SeedData
                 new Product
                 {
                     ProductId = 477,
-                    Brand = "Вильямс",
-                    Author = "Джон Скит",
+                    BrandId = 1,
+                    CategoryId = 1,
+                    AuthorId = 3,
                     Name = "C# для профессионалов. Тонкости программирования",
                     Price = 2484,
                     ImageLink = "https://cdn1.ozone.ru/multimedia/1026732931.jpg",
@@ -45,8 +48,9 @@ namespace SeedData
                 new Product
                 {
                     ProductId = 439,
-                    Brand = "БХВ-Петербург",
-                    Author = "Фленов Михаил Е.",
+                    BrandId = 1,
+                    CategoryId = 1,
+                    AuthorId = 4,
                     Name = "Библия C#. 5-е изд., перераб. и доп",
                     Price = 770,
                     ImageLink = "https://cdn1.ozone.ru/s3/multimedia-z/6129084299.jpg",
