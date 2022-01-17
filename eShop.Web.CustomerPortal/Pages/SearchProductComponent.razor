@@ -3,7 +3,6 @@
 
 @inject ISearchProductUseCase searchProduct
 
-
 <div class="container">
     <SearchBarComponent OnSearch="HandleSearch"></SearchBarComponent>
     <br />
@@ -33,7 +32,6 @@
 
         products = searchProduct.Execute();
     }
-
     private void HandleSearch(string filter)
     {
         products = searchProduct.Execute(filter);

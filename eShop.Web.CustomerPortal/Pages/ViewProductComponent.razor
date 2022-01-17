@@ -8,27 +8,34 @@
 @inject IGetBrandByIdUseCase GetBrandById
 @inject IGetAuthorByIdUseCase GetAuthorById
 
-<div class="card" style="width: 28rem;">
-    <div class="card-body">
-        <img src="@product.ImageLink" width="100%"/>
-        <h5 class="card-title">@category.Name</h5>
-        <h5 class="card-title">@product.Name</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@brand.Name</h6>
-        <h6 class="card-subtitle mb-2 text-muted">@author.FirstName @author.LastName</h6>
-        <hr />
-        <p>
-            Цена: <label style="color:darkred">@product.Price.ToString("c")</label>
-        </p>
-        <p class="card-text">@product.Description</p>
+<div class="card mb-3">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img class="img-fluid" src="@product.ImageLink"/>
     </div>
-    <button class="button btn-primary" @onclick="AddToCart">Добавить в корзину</button>
-    <AuthorizeView Policy="AdminOnly">
-        <Authorized>
-            <button class="button btn-primary" @onclick="EditProduct">Редактировать</button>
-            <button class="button btn-primary" @onclick="DeleteProduct">Удалить</button>
-        </Authorized>
-    </AuthorizeView>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">@product.Name</h5>
+        <p class="card-text">Цена: <label style="color:darkred">@product.Price.ToString("c")</label></p>
+        <button type="button" class="button btn-success btn-lg btn-block" @onclick="AddToCart">Добавить в корзину</button>
+        <br/>
+        <p class="card-text">@product.Description</p>
+        <p class="card-text"><small class="text-muted">@author.FirstName @author.LastName</small></p>
+        <p class="card-text"><small class="text-muted">@brand.Name</small></p>
+        <p class="card-text"><small class="text-muted">@category.Name</small></p>
+
+        <AuthorizeView Policy="AdminOnly">
+            <Authorized>
+                <button type="button" class="button btn-warning btn-lg btn-block" @onclick="EditProduct">Редактировать</button>
+                <br/>
+                <button type="button" class="button btn-danger btn-lg btn-block" @onclick="DeleteProduct">Удалить</button>
+            </Authorized>
+        </AuthorizeView>
+      </div>
+    </div>
+  </div>
 </div>
+
 <br/>
 <NavLink href="products">Вернуться</NavLink>
 

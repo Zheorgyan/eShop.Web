@@ -1,8 +1,13 @@
-﻿    <div class="card m-2 p-2" style="width: 12rem;">
+﻿
+@inject IAddProductToCartUseCase  addProductToCartUseCase
+@inject NavigationManager NavigationManager
+
+    <div class="card m-2 p-2" style="width: 12rem;">
         <img src="@Product.ImageLink" class="card-img-top" alt="">
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
             <h5 class="card-title"><NavLink Href="@($"product/{Product.ProductId}")">@Product.Name</NavLink></h5>
             <p class="card-text" style="color:darkred">@Product.Price.ToString("c")</p>
+            <button type="button" class="button btn-success btn-lg btn-block align-self-end" style="margin-top: auto" @onclick="() => AddToCart(Product.ProductId)">Добавить в корзину</button>
         </div>
     </div>
 
@@ -10,5 +15,11 @@
 @code {
     [Parameter]
     public Product Product { get; set; }
+
+    private void AddToCart(int productId)
+    {
+        addProductToCartUseCase.Execute(productId);
+        NavigationManager.NavigateTo("/");
+    }
 
 }

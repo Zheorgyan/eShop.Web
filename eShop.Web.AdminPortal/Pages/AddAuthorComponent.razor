@@ -13,16 +13,16 @@
         <ValidationSummary></ValidationSummary>
 
         <div class="form-group">
-            <label for="name">Наименование</label>
+            <label for="name">Имz</label>
             <InputText id="name" @bind-Value="author.FirstName" class="form-control"></InputText>
         </div>
                 <div class="form-group">
             <label for="secondName">Фамилия</label>
-            <InputText id="secondName" @bind-Value="author.SecondName" class="form-control"></InputText>
+            <InputText id="lastName" @bind-Value="author.LastName" class="form-control"></InputText>
         </div>
         <div class="form-group">
-            <label for="lastName">Фамилия</label>
-            <InputText id="lastName" @bind-Value="author.LastName" class="form-control"></InputText>
+            <label for="lastName">Отчество</label>
+            <InputText id="secondName" @bind-Value="author.SecondName" class="form-control"></InputText>
         </div>
         <button type="submit" class="btn btn-primary">Добавить</button>
         <button type="button" class="btn btn-primary" @onclick="OnCancel">Отменить</button>

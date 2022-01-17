@@ -1,26 +1,88 @@
-﻿
-<div class="form-inline">    
-    <div class="form-group mx-sm-3 mb-2">
-        <input type="text" class="form-control" id="filter" @bind-value="filter" @onkeyup="HandleKeyUp" />        
+﻿@inject IViewAuthorsUseCase ViewAuthorsUseCase
+@inject IViewBrandsUseCase ViewBrandsUseCase
+@inject IViewCategoriesUseCase ViewCategoriesUseCase
+
+<div class="form-inline">
+    <div class="input-group" style="width: 100%">
+        <input type="text" class="form-control" @bind-value="filter" @onkeyup="HandleKeyUp" placeholder="Поиск книги, авторов, издательств, категорий"
+               aria-label="Поиск книги, авторов, издательств, категорий" aria-describedby="button-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="button" @onclick="HandleSearch">Поиск</button>
+        </div>
     </div>
-    <button type="button" class="btn btn-primary mb-2" @onclick="HandleSearch">Поиск</button>
 </div>
+
+<br />
+
+<div class="form-group">
+    <label for="category">Категория</label>
+    <select id="category" class="form-select" @onchange="FilterProducts">
+        <option selected></option>
+        @foreach (var category in categories)
+        {
+            <option value="@category.Name">@category.Name</option>
+        }
+    </select>
+</div>
+<br />
+<div class="form-group">
+    <label for="author">Автор</label>
+    <select id="author" class="form-select" @onchange="FilterProducts">
+        <option selected></option>
+        @foreach (var author in authors)
+        {
+            <option value="@author.LastName">@author.LastName</option>
+        }
+    </select>
+</div>
+<br />
+<div class="form-group">
+    <label for="brand">Издательство</label>
+    <select id="brand" class="form-select" @onchange="FilterProducts">
+        <option selected></option>
+        @foreach (var brand in brands)
+        {
+            <option value="@brand.Name">@brand.Name</option>
+        }
+    </select>
+</div>
+
+
 
 @code {
 
     private string filter;
+    private IEnumerable<Category> categories;
+    private IEnumerable<Author> authors;
+    private IEnumerable<Brand> brands;
 
     [Parameter]
     public EventCallback<string> OnSearch { get; set; }
 
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        categories = ViewCategoriesUseCase.Execute();
+        authors = ViewAuthorsUseCase.Execute();
+        brands = ViewBrandsUseCase.Execute();
+    }
+    private void FilterProducts(ChangeEventArgs e)
+    {
+        OnSearch.InvokeAsync(e.Value.ToString());
+    }
     private void HandleSearch()
+    {
+        OnSearch.InvokeAsync(filter);
+    }
+
+    private void FilterProducts(string filter)
     {
         OnSearch.InvokeAsync(filter);
     }
 
     private void HandleKeyUp(KeyboardEventArgs args)
     {
-        if (args.Key == "Enter" )
+        if (args.Key == "Enter")
         {
             if (filter != string.Empty)
             {

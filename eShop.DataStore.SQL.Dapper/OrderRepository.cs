@@ -140,15 +140,6 @@ namespace eShop.DataStore.SQL.Dapper
                       WHERE OrderId = @OrderId";
 
             dataAccess.ExecuteCommand(sql, order);
-
-            sql = @"UPDATE [OrderLineItem]
-                       SET [ProductId] = @ProductId
-                          ,[OrderId] = @OrderId
-                          ,[Quantity] = @Quantity
-                          ,[Price] = @Price
-                     WHERE LineItemId = @LineItemId";
-
-            dataAccess.ExecuteCommand(sql, order.LineItems);
         }
     }
 }
