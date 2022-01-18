@@ -103,17 +103,16 @@ namespace eShop.DataStore.SQL.Dapper
                 products = dataAccess.Query<Product, dynamic>("SELECT * FROM Product", new { });
             else
             {
-                var sql = @"SELECT p.ProductId, p.Name, p.Price, p.Description, p.ImageLink FROM Product p 
+                var sql = @"SELECT p.ProductId, p.Name, p.Price, p.Description, p.ImageLink, p.BrandId, p.AuthorId, p.CategoryId FROM Product p 
                             join Author a on a.AuthorId = p.AuthorId
                             join Brand b on b.BrandId = p.BrandId
                             join Category c on c.CategoryId = p.CategoryId
                             WHERE p.Name like '%' + @Filter + '%' OR a.FirstName like '%' + @Filter + '%' OR a.LastName like '%' + @Filter + '%'
                             OR b.Name like '%' + @Filter + '%' OR c.Name like '%' + @Filter + '%'";
-                
                 products = dataAccess.Query<Product, dynamic>(sql, new { Filter = filter });
-            }    
+            }
 
-            return products.AsEnumerable();
+            return products;
         }
 
         public void UpdateProduct(Product product)

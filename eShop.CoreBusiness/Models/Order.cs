@@ -23,11 +23,10 @@ namespace eShop.CoreBusiness.Models
         public string AdminUser { get; set; }
         public string UniqueId { get; set; }
         public string UserId { get; set; }
+        public string AdditionalText { get; set; }
 
         [NotMapped]
         public List<OrderLineItem> LineItems { get; set; }
-
-        public User User { get; set; }
         public void AddProduct(int productId, int qty, double price)
         {
             var item = LineItems.FirstOrDefault(x => x.ProductId == productId);

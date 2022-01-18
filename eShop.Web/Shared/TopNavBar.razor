@@ -1,4 +1,8 @@
-﻿<div class="navbar navbar-expand-lg navbar-dark bg-dark">
+﻿@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<IdentityUser> UserManager;
+@inject NavigationManager NavigationManager;
+
+<div class="navbar navbar-expand-lg navbar-dark bg-dark">
     <ul class="navbar-nav w-100">
         <li class="nav-item">
             <a class="navbar-brand" href="">eShop</a>
@@ -29,6 +33,11 @@
             </Authorized>
         </AuthorizeView>
         <li class="nav-item ml-auto">
+            <AuthorizeView Policy="UserOnly">
+                <Authorized>
+                    <button type="button" @onclick="@(() => GetOrdersByUser())" class="btn btn-link">Заказы</button>
+                </Authorized>
+            </AuthorizeView>
             <LoginDisplayComponent></LoginDisplayComponent>
             <NavLink class="nav-link" href="cart">
                 <CartComponent></CartComponent>
@@ -39,5 +48,15 @@
 
 @code {
 
+    private async Task GetOrdersByUser()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
+        if (user.Identity.IsAuthenticated)
+        {
+            var currentUser = await UserManager.GetUserAsync(user);
+            NavigationManager.NavigateTo($"/orders/{currentUser.Id}");
+        }
+    }
 }

@@ -1,6 +1,6 @@
 ﻿@page "/processorder/{id:int}"
 
-@attribute [Authorize(Policy ="AdminOnly")]
+@attribute [Authorize(Policy = "AdminOnly")]
 
 @inject NavigationManager NavigationManager
 
@@ -19,6 +19,7 @@
     <p>@order.CustomerCity</p>
     <p>@order.CustomerStateProvince</p>
     <p>@order.CustomerCountry</p>
+    <p>Трек номер заказа: @order.UniqueId</p>
     <br />
 
     <br />
@@ -41,9 +42,15 @@
             }
         </tbody>
     </table>
-
+    <div class="form-inline">
+        <div class="input-group" style="width: 100%">
+            <input type="text" class="form-control" @bind-value="order.AdditionalText" placeholder="Дополнительный комментарий к заказу">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="button" @onclick="HandleProcessOrder">Отметить заказ как обработанный</button>
+            </div>
+        </div>
+    </div>
     <br />
-    <button type="button" class="btn btn-primary" @onclick="HandleProcessOrder">Отметить заказ как обработанный</button>
 }
 
 @code {
@@ -76,7 +83,7 @@
     {
         if (order != null && authState != null)
         {
-            processOrderUseCase.Execute(order.OrderId.Value, authState.User.Identity.Name);
+            processOrderUseCase.Execute(order.OrderId.Value, authState.User.Identity.Name, order.AdditionalText);
             NavigationManager.NavigateTo("outstandingorders");
         }
     }

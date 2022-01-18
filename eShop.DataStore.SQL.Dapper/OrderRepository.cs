@@ -124,6 +124,12 @@ namespace eShop.DataStore.SQL.Dapper
             }
         }
 
+        public IEnumerable<Order> GetOrdersByUser(string userId)
+        {
+            var sql = @"SELECT * FROM [ORDER] WHERE [UserId] = @UserId";
+            return dataAccess.Query<Order, dynamic>(sql, new { UserId = userId });
+        }
+
         public void UpdateOrder(Order order)
         {
             var sql = @"UPDATE [Order]
@@ -137,6 +143,7 @@ namespace eShop.DataStore.SQL.Dapper
                           ,[AdminUser] = @AdminUser
                           ,[UniqueId] = @UniqueId
                           ,[UserId] = @UserId
+                          ,[AdditionalText] = @AdditionalText
                       WHERE OrderId = @OrderId";
 
             dataAccess.ExecuteCommand(sql, order);

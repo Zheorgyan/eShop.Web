@@ -16,5 +16,7 @@ namespace eShop.UseCases.PluginInterfaces.DataStore
         IEnumerable<Order> GetProcessedOrders();
         IEnumerable<Order> SearchOrders(string customerName, DateTime startDate, DateTime endDate);
         IEnumerable<OrderLineItem> GetLineItemsByOrderId(int orderId);
+
+        IEnumerable<Order> GetOrdersByUser(string userId);
     }
 }

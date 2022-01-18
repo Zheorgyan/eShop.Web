@@ -51,6 +51,11 @@ namespace eShop.DataStore.SQL.EF
             return db.Order.ToList();
         }
 
+        public IEnumerable<Order> GetOrdersByUser(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Order> GetOutstandingOrders()
         {
             return db.Order.Where(x => x.DateProcessed == null).ToList();

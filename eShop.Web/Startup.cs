@@ -18,6 +18,7 @@ using eShop.UseCases.ProcessOrderScreen;
 using eShop.UseCases.SearchProductScreen;
 using eShop.UseCases.ShoppingCartScreen;
 using eShop.UseCases.TransactionsOrderScreen;
+using eShop.UseCases.ViewOrdersByCustomerScreen;
 using eShop.UseCases.ViewProductScreen;
 using eShop.Web.Common.JsInterOp;
 using Microsoft.AspNetCore.Builder;
@@ -88,7 +89,7 @@ namespace eShop.Web
             services.AddTransient<IAddProductUseCase, AddProductUseCase>();
             services.AddTransient<IEditProductUseCase, EditProductUseCase>();
             services.AddTransient<UseCases.DeleteProductUseCase.IDeleteProductUseCase, UseCases.DeleteProductUseCase.DeleteProductUseCase>();
-
+            
             services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>();
             services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
             services.AddTransient<IUpdateQuantityUseCase, UpdateQuantityUseCase>();
@@ -102,6 +103,7 @@ namespace eShop.Web
             services.AddTransient<IProcessOrderUseCase, ProcessOrderUseCase>();
             services.AddTransient<IGetOrdersUseCase, GetOrdersUseCase>();
             services.AddTransient<IViewOrdersUseCase, ViewOrdersUseCase>();
+            services.AddTransient<IViewOrdersByCustomerUseCase, ViewOrdersByCustomerUseCase>();
 
             services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
             services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();

@@ -5,19 +5,12 @@
             @if (Order.DatePlaced.HasValue)
             {
                 @Order.DatePlaced.Value.ToString("yyyy-MM-dd")
-            }            
+            }
         </td>
         <td>
-            @if (!Order.DateProcessed.HasValue)
-            {
-                <NavLink href="@($"processorder/{Order.OrderId}")">
-                    @Order.OrderId
-                </NavLink>
-            }
-            else
-            {
+            <NavLink href="@($"orderconfirm/{Order.UniqueId}")">
                 @Order.OrderId
-            }
+            </NavLink>
         </td>
         <td>@Order.CustomerCountry</td>
         <td>@Order.CustomerStateProvince</td>

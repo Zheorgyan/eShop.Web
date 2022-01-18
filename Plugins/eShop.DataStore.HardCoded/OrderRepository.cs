@@ -80,5 +80,10 @@ namespace eShop.DataStore.HardCoded
                                     x.Value.DatePlaced >= startDate && x.Value.DatePlaced <= endDate.AddDays(1).Date) as IEnumerable<Order>;
             }
         }
+
+        public IEnumerable<Order> GetOrdersByUser(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -2,11 +2,26 @@
 @page "/products"
 
 @inject ISearchProductUseCase searchProduct
+@inject IViewAuthorsUseCase ViewAuthorsUseCase
+@inject IViewBrandsUseCase ViewBrandsUseCase
+@inject IViewCategoriesUseCase ViewCategoriesUseCase
+
 
 <div class="container">
     <SearchBarComponent OnSearch="HandleSearch"></SearchBarComponent>
     <br />
+    <Dropdown TItem="string" OnSelected="@HandleSearch">
+        <InitialTip>Категории</InitialTip>
+        <ChildContent>
+            @foreach (var cat in categories)
+            {
+                <DropDownListItem Item="@cat.Name">@cat.Name</DropDownListItem>
+            }
+        </ChildContent>
+    </Dropdown>
+    <br />
 
+    <br />
     @if (products != null && products.Count() > 0)
     {
         <div class="row">
@@ -24,17 +39,19 @@
 
 @code {
 
-    private IEnumerable<Product> products;
+    private List<Product> products;
+    private IEnumerable<Category> categories;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        products = searchProduct.Execute();
-    }
-    private void HandleSearch(string filter)
-    {
-        products = searchProduct.Execute(filter);
+        products = searchProduct.Execute().ToList();
+        categories = ViewCategoriesUseCase.Execute();
     }
 
+    private void HandleSearch(string filter)
+    {
+        products = searchProduct.Execute(filter: filter).ToList();
+    }
 }

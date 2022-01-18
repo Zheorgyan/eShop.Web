@@ -17,11 +17,12 @@ namespace eShop.UseCases.ProcessOrderScreen
             this.orderService = orderService;
         }
 
-        public bool Execute(int orderId, string adminUserName)
+        public bool Execute(int orderId, string adminUserName, string additionalText)
         {
             var order = orderRepository.GetOrder(orderId);
             order.AdminUser = adminUserName;
             order.DateProcessed = DateTime.Now;
+            order.AdditionalText = additionalText;
 
             if (orderService.ValidateProcessOrder(order))
             {

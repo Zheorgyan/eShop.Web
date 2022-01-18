@@ -17,7 +17,7 @@ namespace eShop.UseCases.SearchProductScreen
 
         public IEnumerable<Product> Execute(string filter = null)
         {
-            return productRepository.GetProducts(filter);
+            return productRepository.GetProducts(filter: filter);
         }
     }
 }

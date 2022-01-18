@@ -2,6 +2,6 @@
 {
     public interface IProcessOrderUseCase
     {   
-        bool Execute(int orderId, string adminUserName);
+        bool Execute(int orderId, string adminUserName, string additionalText);
     }
 }
