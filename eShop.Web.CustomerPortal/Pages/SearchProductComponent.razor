@@ -8,20 +8,47 @@
 
 
 <div class="container">
+    <br/>
     <SearchBarComponent OnSearch="HandleSearch"></SearchBarComponent>
-    <br />
-    <Dropdown TItem="string" OnSelected="@HandleSearch">
-        <InitialTip>Категории</InitialTip>
-        <ChildContent>
-            @foreach (var cat in categories)
-            {
-                <DropDownListItem Item="@cat.Name">@cat.Name</DropDownListItem>
-            }
-        </ChildContent>
-    </Dropdown>
-    <br />
+    <div class="form-inline">
+        <br /><br /><br />
+        <label for="category">Категория</label>
+        <br />
+        <Dropdown TItem="string" OnSelected="@FilterProducts">
+            <InitialTip>Категории</InitialTip>
+            <ChildContent>
+                @foreach (var cat in categories)
+                {
+                    <DropDownListItem Item="@cat.Name">@cat.Name</DropDownListItem>
+                }
+            </ChildContent>
+        </Dropdown>
+        <br />
+        <label for="author">Авторы</label>
+        <br />
+        <Dropdown TItem="string" OnSelected="@FilterProducts">
+            <InitialTip>Авторы</InitialTip>
+            <ChildContent>
+                @foreach (var author in authors)
+                {
+                    <DropDownListItem Item="@author.LastName">@author.LastName @author.FirstName</DropDownListItem>
+                }
+            </ChildContent>
+        </Dropdown>
+        <br />
+        <label for="brand">Издательства</label>
+        <br />
+        <Dropdown TItem="string" OnSelected="@FilterProducts">
+            <InitialTip>Издательства</InitialTip>
+            <ChildContent>
+                @foreach (var brand in brands)
+                {
+                    <DropDownListItem Item="@brand.Name">@brand.Name</DropDownListItem>
+                }
+            </ChildContent>
+        </Dropdown>
+    </div>
 
-    <br />
     @if (products != null && products.Count() > 0)
     {
         <div class="row">
@@ -41,6 +68,11 @@
 
     private List<Product> products;
     private IEnumerable<Category> categories;
+    private IEnumerable<Brand> brands;
+    private IEnumerable<Author> authors;
+    private string selectionCat;
+    private string selectionBr;
+    private string selectionAut;
 
     protected override void OnInitialized()
     {
@@ -48,10 +80,55 @@
 
         products = searchProduct.Execute().ToList();
         categories = ViewCategoriesUseCase.Execute();
+        brands = ViewBrandsUseCase.Execute();
+        authors = ViewAuthorsUseCase.Execute();
     }
+    private void FilterProducts(string selection)
+    {
+        products.Clear();
+        var pBrands = new List<Product>();
+        var pCats = new List<Product>();
+        var pAuts = new List<Product>();
+        var pp = new List<Product>();
 
+        foreach (var b in brands)
+        {
+            if (b.Name.Contains(selection)) selectionBr = selection;
+        }
+        foreach (var c in categories)
+        {
+            if (c.Name.Contains(selection)) selectionCat = selection;
+        }
+        foreach (var a in authors)
+        {
+            if (a.LastName.Contains(selection)) selectionAut = selection;
+        }
+        if (!string.IsNullOrEmpty(selectionCat)) pCats = searchProduct.Execute(selectionCat).ToList();
+        if (!string.IsNullOrEmpty(selectionBr)) pBrands = searchProduct.Execute(selectionBr).ToList();
+        if (!string.IsNullOrEmpty(selectionAut)) pAuts = searchProduct.Execute(selectionAut).ToList();
+        if (pCats.Count > 0)
+        {
+            products.AddRange(pCats);
+        }
+        if (pBrands.Count > 0)
+        {
+            products.AddRange(pBrands);
+        }
+        if (pAuts.Count > 0)
+        {
+            products.AddRange(pAuts);
+        }
+        var group = products.GroupBy(x => x.ProductId).Where(g => g.Count() > 1).ToList();
+        if (group.Count > 0)
+        {
+            products = group.SelectMany(g => g).ToList();
+        }
+
+        products = products.DistinctBy(p => p.ProductId).ToList();
+    }
     private void HandleSearch(string filter)
     {
         products = searchProduct.Execute(filter: filter).ToList();
     }
+
 }

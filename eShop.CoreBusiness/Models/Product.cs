@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ namespace eShop.CoreBusiness.Models
 {
     public class Product
     {
-        public Product():base() {}
+        public Product() : base() { }
 
         public Product(Product product)
         {
@@ -20,7 +21,7 @@ namespace eShop.CoreBusiness.Models
             Price = product.Price;
             ImageLink = product.ImageLink;
             Description = product.Description;
-            
+
         }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductId { get; set; }
@@ -39,12 +40,7 @@ namespace eShop.CoreBusiness.Models
         [JsonIgnore]
         [IgnoreDataMember]
         public Category Category { get; set; }
-
-
         public List<BrandForProduct> BrandForProducts { get; set; }
-
-
         public List<AuthorForProduct> AuthorForProducts { get; set; }
-
     }
 }
