@@ -27,7 +27,7 @@ namespace eShop.CoreBusiness.Models
 
         [NotMapped]
         public List<OrderLineItem> LineItems { get; set; }
-        public void AddProduct(int productId, int qty, double price)
+        public void AddProduct(int productId, int qty, decimal price)
         {
             var item = LineItems.FirstOrDefault(x => x.ProductId == productId);
             if (item != null)
